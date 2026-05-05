@@ -1,0 +1,667 @@
+{
+  "info": {
+    "_postman_id": "7b4f7b0f-9f78-4f9d-9e4b-5e7a9d2d8f01",
+    "name": "ms-access API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8001/api/v1" },
+    { "key": "acceptLanguage", "value": "es-ES" },
+    { "key": "interinId", "value": "00000000-0000-0000-0000-000000000001" },
+    { "key": "profileId", "value": "00000000-0000-0000-0000-000000000002" },
+    { "key": "roleId", "value": "00000000-0000-0000-0000-000000000003" },
+    { "key": "resourceId", "value": "00000000-0000-0000-0000-000000000004" },
+    { "key": "userProfileId", "value": "00000000-0000-0000-0000-000000000005" },
+    { "key": "profileRoleId", "value": "00000000-0000-0000-0000-000000000006" },
+    { "key": "roleResourceId", "value": "00000000-0000-0000-0000-000000000007" },
+    { "key": "userCode", "value": "USR001" },
+    { "key": "translationDomain", "value": "parameter" },
+    { "key": "translationEntity", "value": "parameter" },
+    { "key": "translationEntityId", "value": "a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53" },
+    { "key": "translationLanguageCode", "value": "es-ES" }
+  ],
+  "item": [
+    {
+      "name": "Access Menu",
+      "item": [
+        {
+          "name": "Get Menu By User Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/access/menu/by-user/{{userCode}}", "host": ["{{baseUrl}}"], "path": ["access", "menu", "by-user", "{{userCode}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profiles",
+      "item": [
+        {
+          "name": "List Profiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] }
+          }
+        },
+        {
+          "name": "Get Profile By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
+          }
+        },
+        {
+          "name": "Create Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"PROF_ADMIN\",\n  \"name\": \"Perfil Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"PROF_ADMIN\",\n  \"name\": \"Perfil Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
+          }
+        },
+        {
+          "name": "Delete Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "List Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "Get Role By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"ROLE_ADMIN\",\n  \"name\": \"Rol Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"ROLE_ADMIN\",\n  \"name\": \"Rol Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Resources",
+      "item": [
+        {
+          "name": "List Resources",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/resources", "host": ["{{baseUrl}}"], "path": ["resources"] }
+          }
+        },
+        {
+          "name": "Get Resource By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
+          }
+        },
+        {
+          "name": "Get Resource Tree By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}/tree", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}", "tree"] }
+          }
+        },
+        {
+          "name": "Get Resource Children By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}/children", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}", "children"] }
+          }
+        },
+        {
+          "name": "Create Resource",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"MENU_SECURITY\",\n  \"description\": \"Menu de seguridad\",\n  \"type\": \"menu\",\n  \"name\": \"Seguridad\",\n  \"restricted\": true,\n  \"endpoint\": \"/security\",\n  \"resourceId\": null,\n  \"moduleCode\": \"SEC\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/resources", "host": ["{{baseUrl}}"], "path": ["resources"] }
+          }
+        },
+        {
+          "name": "Update Resource",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"MENU_SECURITY\",\n  \"description\": \"Menu de seguridad\",\n  \"type\": \"menu\",\n  \"name\": \"Seguridad\",\n  \"restricted\": true,\n  \"endpoint\": \"/security\",\n  \"resourceId\": null,\n  \"moduleCode\": \"SEC\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
+          }
+        },
+        {
+          "name": "Delete Resource",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Local Translations",
+      "item": [
+        {
+          "name": "List Local Translations",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/local-translations", "host": ["{{baseUrl}}"], "path": ["local-translations"] }
+          }
+        },
+        {
+          "name": "Get Local Translation By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "local-translations",
+                "{{translationDomain}}",
+                "{{translationEntity}}",
+                "{{translationEntityId}}",
+                "{{translationLanguageCode}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Local Translation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"{{translationDomain}}\",\n  \"entity\": \"{{translationEntity}}\",\n  \"entityId\": \"{{translationEntityId}}\",\n  \"languageCode\": \"{{translationLanguageCode}}\",\n  \"text\": {\n    \"name\": \"Cliente\",\n    \"description\": \"Cliente corporativo\",\n    \"address\": \"Av. Principal\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/local-translations", "host": ["{{baseUrl}}"], "path": ["local-translations"] }
+          }
+        },
+        {
+          "name": "Update Local Translation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"{{translationDomain}}\",\n  \"entity\": \"{{translationEntity}}\",\n  \"entityId\": \"{{translationEntityId}}\",\n  \"languageCode\": \"{{translationLanguageCode}}\",\n  \"text\": {\n    \"name\": \"Cliente actualizado\",\n    \"description\": \"Cliente corporativo\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "local-translations",
+                "{{translationDomain}}",
+                "{{translationEntity}}",
+                "{{translationEntityId}}",
+                "{{translationLanguageCode}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Local Translation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "local-translations",
+                "{{translationDomain}}",
+                "{{translationEntity}}",
+                "{{translationEntityId}}",
+                "{{translationLanguageCode}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interins",
+      "item": [
+        {
+          "name": "List Interins",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/interins", "host": ["{{baseUrl}}"], "path": ["interins"] }
+          }
+        },
+        {
+          "name": "Get Interin By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
+          }
+        },
+        {
+          "name": "Create Interin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCode\": \"USR001\",\n  \"userInterinId\": \"USR009\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/interins", "host": ["{{baseUrl}}"], "path": ["interins"] }
+          }
+        },
+        {
+          "name": "Update Interin",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCode\": \"USR001\",\n  \"userInterinId\": \"USR009\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
+          }
+        },
+        {
+          "name": "Delete Interin",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Profiles",
+      "item": [
+        {
+          "name": "List User Profiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/user-profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles"] }
+          }
+        },
+        {
+          "name": "Get User Profile By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
+          }
+        },
+        {
+          "name": "Get Profiles By User Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/user-profiles/by-user/{{userCode}}/profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles", "by-user", "{{userCode}}", "profiles"] }
+          }
+        },
+        {
+          "name": "Create User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCode\": \"USR001\",\n  \"profileId\": \"{{profileId}}\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/user-profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles"] }
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCode\": \"USR001\",\n  \"profileId\": \"{{profileId}}\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
+          }
+        },
+        {
+          "name": "Delete User Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile Roles",
+      "item": [
+        {
+          "name": "List Profile Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profile-roles", "host": ["{{baseUrl}}"], "path": ["profile-roles"] }
+          }
+        },
+        {
+          "name": "Get Profile Role By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
+          }
+        },
+        {
+          "name": "Get Roles By Profile Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profile-roles/by-profile/{{profileId}}/roles", "host": ["{{baseUrl}}"], "path": ["profile-roles", "by-profile", "{{profileId}}", "roles"] }
+          }
+        },
+        {
+          "name": "Create Profile Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profileId\": \"{{profileId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/profile-roles", "host": ["{{baseUrl}}"], "path": ["profile-roles"] }
+          }
+        },
+        {
+          "name": "Update Profile Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profileId\": \"{{profileId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
+          }
+        },
+        {
+          "name": "Delete Profile Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Role Resources",
+      "item": [
+        {
+          "name": "List Role Resources",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/role-resources", "host": ["{{baseUrl}}"], "path": ["role-resources"] }
+          }
+        },
+        {
+          "name": "Get Role Resource By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
+          }
+        },
+        {
+          "name": "Get Resources By Role Id (Translated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources", "host": ["{{baseUrl}}"], "path": ["role-resources", "by-role", "{{roleId}}", "resources"] }
+          }
+        },
+        {
+          "name": "Bulk Create Role Resources",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources/{{resourceId}}/bulk?recursive=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["role-resources", "by-role", "{{roleId}}", "resources", "{{resourceId}}", "bulk"],
+              "query": [
+                { "key": "recursive", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Bulk Delete Role Resources",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources/{{resourceId}}/bulk", "host": ["{{baseUrl}}"], "path": ["role-resources", "by-role", "{{roleId}}", "resources", "{{resourceId}}", "bulk"] }
+          }
+        },
+        {
+          "name": "Create Role Resource",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{roleId}}\",\n  \"resourceId\": \"{{resourceId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/role-resources", "host": ["{{baseUrl}}"], "path": ["role-resources"] }
+          }
+        },
+        {
+          "name": "Update Role Resource",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{roleId}}\",\n  \"resourceId\": \"{{resourceId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
+          }
+        },
+        {
+          "name": "Delete Role Resource",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
