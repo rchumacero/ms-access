@@ -2,7 +2,7 @@ package com.kplian.msaccess.api.resource;
 
 import com.kplian.msaccess.api.dto.response.ResourceTreeSlimResponseDTO;
 import com.kplian.msaccess.api.mapper.ResourceMapper;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.domain.service.AccessMenuService;
 import com.kplian.msaccess.domain.service.ResourceService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -45,12 +45,31 @@ public class AccessMenuResource {
         @Parameter(description = "User code", required = true)
         @PathParam("userCode") String userCode
     ) {
-        List<ResourceEntity> allResources = accessMenuService.findAllResources();
+        List<Resource> allResources = accessMenuService.findAllResources();
         Set<UUID> allowedIds = accessMenuService.findAllowedResourceIdsByUserCode(userCode);
         java.util.Map<String, java.util.Map<String, Object>> translations =
             resourceService.getTranslationsForResources(allResources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
         List<ResourceTreeSlimResponseDTO> tree =
             resourceMapper.toSlimTreeForest(allResources, translations, allowedIds);
+        return Response.ok(tree).build();
+    }
+
+    @GET
+    @Path("/menu/by-user/{userCode}/{menuCode}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get access menu tree by user code and menu code")
+    public Response getMenuByUserCodeAndMenuCode(
+        @Parameter(description = "User code", required = true)
+        @PathParam("userCode") String userCode,
+        @Parameter(description = "Menu code", required = true)
+        @PathParam("menuCode") String menuCode
+    ) {
+        List<Resource> filteredResources = accessMenuService.findResourcesByMenuCode(menuCode);
+        Set<UUID> allowedIds = accessMenuService.findAllowedResourceIdsByUserCode(userCode);
+        java.util.Map<String, java.util.Map<String, Object>> translations =
+            resourceService.getTranslationsForResources(filteredResources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
+        List<ResourceTreeSlimResponseDTO> tree =
+            resourceMapper.toSlimTreeForest(filteredResources, translations, allowedIds);
         return Response.ok(tree).build();
     }
 }

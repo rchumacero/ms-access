@@ -4,7 +4,7 @@ import com.kplian.msaccess.api.dto.request.ResourceRequestDTO;
 import com.kplian.msaccess.api.dto.response.ResourceResponseDTO;
 import com.kplian.msaccess.api.dto.response.ResourceTreeSlimResponseDTO;
 import com.kplian.msaccess.api.mapper.ResourceMapper;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.domain.service.ResourceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -43,9 +43,9 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all resources")
     public Response getAll() {
-        List<ResourceEntity> resources = resourceService.findAll();
-        java.util.Map<String, java.util.Map<String, Object>> translations =
-            resourceService.getTranslationsForResources(resources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
+        List<Resource> resources = resourceService.findAll();
+        java.util.Map<String, java.util.Map<String, Object>> translations = resourceService
+                .getTranslationsForResources(resources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
         List<ResourceResponseDTO> dtos = resourceMapper.toResponseDTOs(resources, translations);
         return Response.ok(dtos).build();
     }
@@ -55,12 +55,10 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get resource by ID")
     public Response getById(
-        @Parameter(description = "Resource ID", required = true)
-        @PathParam("id") UUID id
-    ) {
-        ResourceEntity resource = resourceService.findById(id);
-        java.util.Map<String, java.util.Map<String, Object>> translations =
-            resourceService.getTranslationsForResources(List.of(resource), TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
+            @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id) {
+        Resource resource = resourceService.findById(id);
+        java.util.Map<String, java.util.Map<String, Object>> translations = resourceService
+                .getTranslationsForResources(List.of(resource), TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
         java.util.Map<String, Object> translation = translations.get(resource.getId().toString());
         ResourceResponseDTO dto = resourceMapper.toResponseDTO(resource, translation);
         return Response.ok(dto).build();
@@ -71,13 +69,11 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get resource tree by ID")
     public Response getTreeById(
-        @Parameter(description = "Resource ID", required = true)
-        @PathParam("id") UUID id
-    ) {
-        ResourceEntity root = resourceService.findById(id);
-        List<ResourceEntity> allResources = resourceService.findAll();
-        java.util.Map<String, java.util.Map<String, Object>> translations =
-            resourceService.getTranslationsForResources(allResources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
+            @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id) {
+        Resource root = resourceService.findById(id);
+        List<Resource> allResources = resourceService.findAll();
+        java.util.Map<String, java.util.Map<String, Object>> translations = resourceService
+                .getTranslationsForResources(allResources, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
         ResourceTreeSlimResponseDTO tree = resourceMapper.toSlimTree(root, allResources, translations);
         return Response.ok(tree).build();
     }
@@ -87,12 +83,10 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get resource children by ID")
     public Response getChildrenById(
-        @Parameter(description = "Resource ID", required = true)
-        @PathParam("id") UUID id
-    ) {
-        List<ResourceEntity> children = resourceService.findChildren(id);
-        java.util.Map<String, java.util.Map<String, Object>> translations =
-            resourceService.getTranslationsForResources(children, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
+            @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id) {
+        List<Resource> children = resourceService.findChildren(id);
+        java.util.Map<String, java.util.Map<String, Object>> translations = resourceService
+                .getTranslationsForResources(children, TRANSLATION_DOMAIN, TRANSLATION_ENTITY);
         List<ResourceResponseDTO> dtos = resourceMapper.toResponseDTOs(children, translations);
         return Response.ok(dtos).build();
     }
@@ -102,8 +96,8 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Create a new resource")
     public Response create(@Valid ResourceRequestDTO requestDTO) {
-        ResourceEntity resource = resourceMapper.toEntity(requestDTO);
-        ResourceEntity created = resourceService.create(resource);
+        Resource resource = resourceMapper.toEntity(requestDTO);
+        Resource created = resourceService.create(resource, requestDTO.getMenuId());
         ResourceResponseDTO responseDTO = resourceMapper.toResponseDTO(created);
         return Response.status(Response.Status.CREATED).entity(responseDTO).build();
     }
@@ -114,12 +108,10 @@ public class ResourceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Update a resource")
     public Response update(
-        @Parameter(description = "Resource ID", required = true)
-        @PathParam("id") UUID id,
-        @Valid ResourceRequestDTO requestDTO
-    ) {
-        ResourceEntity resource = resourceMapper.toEntity(requestDTO);
-        ResourceEntity updated = resourceService.update(id, resource);
+            @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id,
+            @Valid ResourceRequestDTO requestDTO) {
+        Resource resource = resourceMapper.toEntity(requestDTO);
+        Resource updated = resourceService.update(id, resource, requestDTO.getMenuId());
         ResourceResponseDTO responseDTO = resourceMapper.toResponseDTO(updated);
         return Response.ok(responseDTO).build();
     }
@@ -128,9 +120,7 @@ public class ResourceResource {
     @Path("/{id}")
     @Operation(summary = "Delete a resource")
     public Response delete(
-        @Parameter(description = "Resource ID", required = true)
-        @PathParam("id") UUID id
-    ) {
+            @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id) {
         resourceService.delete(id);
         return Response.noContent().build();
     }

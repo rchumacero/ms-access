@@ -2,15 +2,18 @@ package com.kplian.msaccess.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tresource")
-public class ResourceEntity extends Audit {
+public class Resource extends Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,6 +42,10 @@ public class ResourceEntity extends Audit {
 
     @Column(name = "module_code", nullable = false, length = 50)
     private String moduleCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
     public UUID getId() {
         return id;
@@ -110,5 +117,13 @@ public class ResourceEntity extends Audit {
 
     public void setModuleCode(String moduleCode) {
         this.moduleCode = moduleCode;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

@@ -12,6 +12,8 @@ public class ResourceResponseDTO extends AuditResponseDTO {
     private String endpoint;
     private UUID resourceId;
     private String moduleCode;
+    private UUID menuId;
+    private String menuName;
 
     public UUID getId() {
         return id;
@@ -83,5 +85,21 @@ public class ResourceResponseDTO extends AuditResponseDTO {
 
     public void setModuleCode(String moduleCode) {
         this.moduleCode = moduleCode;
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(UUID menuId) {
+        this.menuId = menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 }

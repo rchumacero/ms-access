@@ -6,7 +6,7 @@ import com.kplian.msaccess.api.dto.response.ResourceResponseDTO;
 import com.kplian.msaccess.api.dto.response.RoleResourceResponseDTO;
 import com.kplian.msaccess.api.mapper.RoleResourceMapper;
 import com.kplian.msaccess.api.mapper.ResourceMapper;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.domain.model.RoleResource;
 import com.kplian.msaccess.domain.service.RoleResourceService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -73,7 +73,7 @@ public class RoleResourceLinkResource {
         @Parameter(description = "Role ID", required = true)
         @PathParam("roleId") UUID roleId
     ) {
-        List<ResourceEntity> resources = roleResourceService.findResourcesByRoleId(roleId);
+        List<Resource> resources = roleResourceService.findResourcesByRoleId(roleId);
         java.util.Map<String, java.util.Map<String, Object>> translations =
             roleResourceService.getTranslationsForResources(resources);
         List<ResourceResponseDTO> dtos = resourceMapper.toResponseDTOs(resources, translations);

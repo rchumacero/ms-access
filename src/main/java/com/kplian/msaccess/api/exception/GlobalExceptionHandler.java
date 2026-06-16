@@ -19,10 +19,13 @@ import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import java.time.LocalDateTime;
+import org.jboss.logging.Logger;
 
 @Provider
 @ApplicationScoped
 public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
+
+    private static final Logger LOG = Logger.getLogger(GlobalExceptionHandler.class);
 
     @Inject
     I18nService i18nService;
@@ -66,6 +69,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
             return buildResponse("HTTP_ERROR", "error.http.internal_error", Response.Status.INTERNAL_SERVER_ERROR);
         }
 
+        LOG.error("Unexpected error occurred: " + exception.getMessage(), exception);
         recordTelemetry(exception, "system");
         return buildResponse("UNEXPECTED_ERROR", "error.system.unexpected", Response.Status.INTERNAL_SERVER_ERROR);
     }

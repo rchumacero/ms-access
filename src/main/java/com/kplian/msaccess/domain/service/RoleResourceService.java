@@ -2,7 +2,7 @@ package com.kplian.msaccess.domain.service;
 
 import com.kplian.msaccess.api.service.I18nService;
 import com.kplian.msaccess.domain.exception.I18nBusinessException;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.domain.model.RoleResource;
 import com.kplian.msaccess.infrastructure.persistence.repository.ResourceRepository;
 import com.kplian.msaccess.infrastructure.persistence.repository.RoleRepository;
@@ -41,7 +41,7 @@ public class RoleResourceService {
         return roleResourceRepository.find("deletedAt is null").list();
     }
 
-    public List<ResourceEntity> findResourcesByRoleId(UUID roleId) {
+    public List<Resource> findResourcesByRoleId(UUID roleId) {
         validateRoleExists(roleId);
         List<RoleResource> roleResources = roleResourceRepository.findByRoleId(roleId);
         List<UUID> resourceIds = roleResources.stream()
@@ -53,7 +53,7 @@ public class RoleResourceService {
         return resourceRepository.find("id in ?1 and deletedAt is null", resourceIds).list();
     }
 
-    public Map<String, Map<String, Object>> getTranslationsForResources(List<ResourceEntity> resources) {
+    public Map<String, Map<String, Object>> getTranslationsForResources(List<Resource> resources) {
         return resourceService.getTranslationsForResources(resources, "access", "resource");
     }
 

@@ -1,25 +1,11 @@
 {
   "info": {
-    "_postman_id": "7b4f7b0f-9f78-4f9d-9e4b-5e7a9d2d8f01",
+    "_postman_id": "9589392f-7771-4526-a6e2-51bf1b7c5d87",
     "name": "ms-access API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9910990",
+    "_collection_link": "https://go.postman.co/collection/9910990-9589392f-7771-4526-a6e2-51bf1b7c5d87?source=collection_link"
   },
-  "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8001/api/v1" },
-    { "key": "acceptLanguage", "value": "es-ES" },
-    { "key": "interinId", "value": "00000000-0000-0000-0000-000000000001" },
-    { "key": "profileId", "value": "00000000-0000-0000-0000-000000000002" },
-    { "key": "roleId", "value": "00000000-0000-0000-0000-000000000003" },
-    { "key": "resourceId", "value": "00000000-0000-0000-0000-000000000004" },
-    { "key": "userProfileId", "value": "00000000-0000-0000-0000-000000000005" },
-    { "key": "profileRoleId", "value": "00000000-0000-0000-0000-000000000006" },
-    { "key": "roleResourceId", "value": "00000000-0000-0000-0000-000000000007" },
-    { "key": "userCode", "value": "USR001" },
-    { "key": "translationDomain", "value": "parameter" },
-    { "key": "translationEntity", "value": "parameter" },
-    { "key": "translationEntityId", "value": "a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53" },
-    { "key": "translationLanguageCode", "value": "es-ES" }
-  ],
   "item": [
     {
       "name": "Access Menu",
@@ -29,10 +15,82 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/access/menu/by-user/{{userCode}}", "host": ["{{baseUrl}}"], "path": ["access", "menu", "by-user", "{{userCode}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/access/menu/by-user/rodrychm@gmail.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "access",
+                "menu",
+                "by-user",
+                "rodrychm@gmail.com"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu By User Code and Menu Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/access/menu/by-user/{{userCode}}/{{menuCode}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "access",
+                "menu",
+                "by-user",
+                "{{userCode}}",
+                "{{menuCode}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu By User Code Copy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "https://dev-api.kplian.com/access/api/v1/access/menu/by-user/USR001",
+              "protocol": "https",
+              "host": [
+                "dev-api",
+                "kplian",
+                "com"
+              ],
+              "path": [
+                "access",
+                "api",
+                "v1",
+                "access",
+                "menu",
+                "by-user",
+                "USR001"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -44,60 +102,139 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profiles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Profile By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{profileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profiles",
+                "{{profileId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Profile",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MzQ4OTY0NTY1NDI0NTM3OSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi16aXRhZGVsLmtwbGlhbi5jb20iLCJzdWIiOiIzNjkwMTgyNjUxMzQ5NTY4MDMiLCJhdWQiOlsiMzY4NzM5NTYyMTkwNTM2NzA4IiwiMzY4NzQwNzUwNDcwNDc5ODc2IiwiMzY4NzM4NTE1ODYyNjgzNjUyIiwiMzUzNDg5NjQzODc1OTkxNTU1Il0sImV4cCI6MTc3NjczNzEyOCwiaWF0IjoxNzc2NjkzOTI4LCJuYmYiOjE3NzY2OTM5MjgsImNsaWVudF9pZCI6IjM2ODczOTU2MjE5MDUzNjcwOCIsImp0aSI6IlYyXzM2OTQzMDgyMTA4NzQ3ODAxOS1hdF8zNjk0MzA4MjEwODc1NDM1NTUifQ.HIG3bxqrL4rhKNjjpYJBlKUwhu3yrc2VpWol115noV8IYVAVpwrSxvBXCBps9YtcmDRpmuBGV3XaphW1HAkv3aVW5k03mpOz7D5OpTgenRXGfecJjz0rJu2DUK1V3gMYJ_7QUOzoqLG1ivp8scEPwhx6F6_-8YL8cBAcyuKlS6EkPCra5AK82HJI_VhqMGWDRoGtVGy0qxH7RppDaimlwsP8_EIlZFnMt6RQmIumfy_EGAf0ap7kQ8_Cqis8NPzUAJNy47jHKTyBSyFMMOKdv9e5xpKAJN3yCDKydYaYTV0fPlCgUy4fr3RMI7_j8JrEEP6JE5gkrQOkpamupqB9aw",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"code\": \"PROF_ADMIN\",\n  \"name\": \"Perfil Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+              "raw": "{\n  \"code\": \"PROF_SUPER_ADMIN\",\n  \"name\": \"Super Administrator profile for all modules\",\n  \"moduleCode\": \"ALL\",\n  \"vendorCode\": \"\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profiles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Profile",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"code\": \"PROF_ADMIN\",\n  \"name\": \"Perfil Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{profileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profiles",
+                "{{profileId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Profile",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profiles/{{profileId}}", "host": ["{{baseUrl}}"], "path": ["profiles", "{{profileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{profileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profiles",
+                "{{profileId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -109,60 +246,139 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Role By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Role",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MzQ4OTY0NTY1NDI0NTM3OSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi16aXRhZGVsLmtwbGlhbi5jb20iLCJzdWIiOiIzNjkwMTgyNjUxMzQ5NTY4MDMiLCJhdWQiOlsiMzY4NzM5NTYyMTkwNTM2NzA4IiwiMzY4NzQwNzUwNDcwNDc5ODc2IiwiMzY4NzM4NTE1ODYyNjgzNjUyIiwiMzUzNDg5NjQzODc1OTkxNTU1Il0sImV4cCI6MTc3NjczNzEyOCwiaWF0IjoxNzc2NjkzOTI4LCJuYmYiOjE3NzY2OTM5MjgsImNsaWVudF9pZCI6IjM2ODczOTU2MjE5MDUzNjcwOCIsImp0aSI6IlYyXzM2OTQzMDgyMTA4NzQ3ODAxOS1hdF8zNjk0MzA4MjEwODc1NDM1NTUifQ.HIG3bxqrL4rhKNjjpYJBlKUwhu3yrc2VpWol115noV8IYVAVpwrSxvBXCBps9YtcmDRpmuBGV3XaphW1HAkv3aVW5k03mpOz7D5OpTgenRXGfecJjz0rJu2DUK1V3gMYJ_7QUOzoqLG1ivp8scEPwhx6F6_-8YL8cBAcyuKlS6EkPCra5AK82HJI_VhqMGWDRoGtVGy0qxH7RppDaimlwsP8_EIlZFnMt6RQmIumfy_EGAf0ap7kQ8_Cqis8NPzUAJNy47jHKTyBSyFMMOKdv9e5xpKAJN3yCDKydYaYTV0fPlCgUy4fr3RMI7_j8JrEEP6JE5gkrQOkpamupqB9aw",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"code\": \"ROLE_ADMIN\",\n  \"name\": \"Rol Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
+              "raw": "{\n  \"code\": \"ROLE_CRM_ADMIN\",\n  \"name\": \"Administrator Role for CRM module\",\n  \"moduleCode\": \"CRM\",\n  \"vendorCode\": \"\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Role",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"code\": \"ROLE_ADMIN\",\n  \"name\": \"Rol Administrador\",\n  \"moduleCode\": \"SEC\",\n  \"vendorCode\": \"KPL\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Role",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -174,80 +390,177 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/resources", "host": ["{{baseUrl}}"], "path": ["resources"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Resource By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources/{{resourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources",
+                "{{resourceId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Resource Tree By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}/tree", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}", "tree"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources/{{resourceId}}/tree",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources",
+                "{{resourceId}}",
+                "tree"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Resource Children By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}/children", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}", "children"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources/{{resourceId}}/children",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources",
+                "{{resourceId}}",
+                "children"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Resource",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"code\": \"MENU_SECURITY\",\n  \"description\": \"Menu de seguridad\",\n  \"type\": \"menu\",\n  \"name\": \"Seguridad\",\n  \"restricted\": true,\n  \"endpoint\": \"/security\",\n  \"resourceId\": null,\n  \"moduleCode\": \"SEC\"\n}"
+              "raw": "{\n  \"code\": \"CRM_SKI\",\n  \"description\": \"Person Skill\",\n  \"type\": \"view\",\n  \"name\": \"Person Skill\",\n  \"restricted\": true,\n  \"endpoint\": \"/crm/person-skill\",\n  \"resourceId\": \"19c9cb14-984d-4c26-8639-7e4149fc7750\", \n  \"moduleCode\": \"CRM\",\n  \"menuId\": \"{{menuId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/resources", "host": ["{{baseUrl}}"], "path": ["resources"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Resource",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"code\": \"MENU_SECURITY\",\n  \"description\": \"Menu de seguridad\",\n  \"type\": \"menu\",\n  \"name\": \"Seguridad\",\n  \"restricted\": true,\n  \"endpoint\": \"/security\",\n  \"resourceId\": null,\n  \"moduleCode\": \"SEC\"\n}"
+              "raw": "{\n  \"code\": \"MENU_SECURITY\",\n  \"description\": \"Menu de seguridad\",\n  \"type\": \"menu\",\n  \"name\": \"Seguridad\",\n  \"restricted\": true,\n  \"endpoint\": \"/security\",\n  \"resourceId\": null,\n  \"moduleCode\": \"SEC\",\n  \"menuId\": \"{{menuId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources/{{resourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources",
+                "{{resourceId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Resource",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/resources/{{resourceId}}", "host": ["{{baseUrl}}"], "path": ["resources", "{{resourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/resources/{{resourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resources",
+                "{{resourceId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -259,21 +572,38 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/local-translations", "host": ["{{baseUrl}}"], "path": ["local-translations"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/local-translations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "local-translations"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Local Translation By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
-              "host": ["{{baseUrl}}"],
+              "host": [
+                "{{baseUrl}}"
+              ],
               "path": [
                 "local-translations",
                 "{{translationDomain}}",
@@ -282,30 +612,52 @@
                 "{{translationLanguageCode}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create Local Translation",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"domain\": \"{{translationDomain}}\",\n  \"entity\": \"{{translationEntity}}\",\n  \"entityId\": \"{{translationEntityId}}\",\n  \"languageCode\": \"{{translationLanguageCode}}\",\n  \"text\": {\n    \"name\": \"Cliente\",\n    \"description\": \"Cliente corporativo\",\n    \"address\": \"Av. Principal\"\n  }\n}"
             },
-            "url": { "raw": "{{baseUrl}}/local-translations", "host": ["{{baseUrl}}"], "path": ["local-translations"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/local-translations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "local-translations"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Local Translation",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -313,7 +665,9 @@
             },
             "url": {
               "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
-              "host": ["{{baseUrl}}"],
+              "host": [
+                "{{baseUrl}}"
+              ],
               "path": [
                 "local-translations",
                 "{{translationDomain}}",
@@ -322,18 +676,24 @@
                 "{{translationLanguageCode}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete Local Translation",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/local-translations/{{translationDomain}}/{{translationEntity}}/{{translationEntityId}}/{{translationLanguageCode}}",
-              "host": ["{{baseUrl}}"],
+              "host": [
+                "{{baseUrl}}"
+              ],
               "path": [
                 "local-translations",
                 "{{translationDomain}}",
@@ -342,7 +702,8 @@
                 "{{translationLanguageCode}}"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -354,60 +715,129 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/interins", "host": ["{{baseUrl}}"], "path": ["interins"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/interins",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interins"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Interin By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/interins/{{interinId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interins",
+                "{{interinId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Interin",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userCode\": \"USR001\",\n  \"userInterinId\": \"USR009\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/interins", "host": ["{{baseUrl}}"], "path": ["interins"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/interins",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interins"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Interin",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userCode\": \"USR001\",\n  \"userInterinId\": \"USR009\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/interins/{{interinId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interins",
+                "{{interinId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Interin",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/interins/{{interinId}}", "host": ["{{baseUrl}}"], "path": ["interins", "{{interinId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/interins/{{interinId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interins",
+                "{{interinId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -419,70 +849,185 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/user-profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get User Profile By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles",
+                "{{userProfileId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Profiles By User Code",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/user-profiles/by-user/{{userCode}}/profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles", "by-user", "{{userCode}}", "profiles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/by-user/{{userCode}}/profiles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles",
+                "by-user",
+                "{{userCode}}",
+                "profiles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create User Profile",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userCode\": \"USR001\",\n  \"profileId\": \"{{profileId}}\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
+              "raw": "{\n  \"userCode\": \"jessica.ribeirodemelo@gmail.com\",\n  \"profileId\": \"{{profileId}}\",\n  \"validFrom\": \"2026-04-01\",\n  \"validTo\": \"2026-12-31\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/user-profiles", "host": ["{{baseUrl}}"], "path": ["user-profiles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User Profile by Array",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCode\": \"rodrigochumaceromoscoso@gmail.com\",\n  \"profiles\": [\"PROF_WAREHOUSE_ADMIN\",\"PROF_CRM_ADMIN\"],\n  \"validFrom\": \"2026-04-01\",\n  \"validTo\": \"2026-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/create-by-array",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles",
+                "create-by-array"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update User Profile",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userCode\": \"USR001\",\n  \"profileId\": \"{{profileId}}\",\n  \"validFrom\": \"2026-02-01\",\n  \"validTo\": \"2026-03-01\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles",
+                "{{userProfileId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete User Profile",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}", "host": ["{{baseUrl}}"], "path": ["user-profiles", "{{userProfileId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/user-profiles/{{userProfileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user-profiles",
+                "{{userProfileId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -494,70 +1039,164 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profile-roles", "host": ["{{baseUrl}}"], "path": ["profile-roles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Profile Role By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles",
+                "{{profileRoleId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Roles By Profile Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profile-roles/by-profile/{{profileId}}/roles", "host": ["{{baseUrl}}"], "path": ["profile-roles", "by-profile", "{{profileId}}", "roles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles/by-profile/{{profileId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles",
+                "by-profile",
+                "{{profileId}}",
+                "roles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Profile Role",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MzQ4OTY0NTY1NDI0NTM3OSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi16aXRhZGVsLmtwbGlhbi5jb20iLCJzdWIiOiIzNjkwMTgyNjUxMzQ5NTY4MDMiLCJhdWQiOlsiMzY4NzM5NTYyMTkwNTM2NzA4IiwiMzY4NzQwNzUwNDcwNDc5ODc2IiwiMzY4NzM4NTE1ODYyNjgzNjUyIiwiMzUzNDg5NjQzODc1OTkxNTU1Il0sImV4cCI6MTc3NjczNzEyOCwiaWF0IjoxNzc2NjkzOTI4LCJuYmYiOjE3NzY2OTM5MjgsImNsaWVudF9pZCI6IjM2ODczOTU2MjE5MDUzNjcwOCIsImp0aSI6IlYyXzM2OTQzMDgyMTA4NzQ3ODAxOS1hdF8zNjk0MzA4MjEwODc1NDM1NTUifQ.HIG3bxqrL4rhKNjjpYJBlKUwhu3yrc2VpWol115noV8IYVAVpwrSxvBXCBps9YtcmDRpmuBGV3XaphW1HAkv3aVW5k03mpOz7D5OpTgenRXGfecJjz0rJu2DUK1V3gMYJ_7QUOzoqLG1ivp8scEPwhx6F6_-8YL8cBAcyuKlS6EkPCra5AK82HJI_VhqMGWDRoGtVGy0qxH7RppDaimlwsP8_EIlZFnMt6RQmIumfy_EGAf0ap7kQ8_Cqis8NPzUAJNy47jHKTyBSyFMMOKdv9e5xpKAJN3yCDKydYaYTV0fPlCgUy4fr3RMI7_j8JrEEP6JE5gkrQOkpamupqB9aw",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"profileId\": \"{{profileId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
+              "raw": "{\n  \"profileId\": \"751a5da0-c5af-4947-8044-2bf9d89fe5ec\",\n  \"roleId\": \"132b31fe-1996-4b4f-a058-6105f024fed9\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/profile-roles", "host": ["{{baseUrl}}"], "path": ["profile-roles"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Profile Role",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"profileId\": \"{{profileId}}\",\n  \"roleId\": \"{{roleId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles",
+                "{{profileRoleId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Profile Role",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}", "host": ["{{baseUrl}}"], "path": ["profile-roles", "{{profileRoleId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/profile-roles/{{profileRoleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile-roles",
+                "{{profileRoleId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -569,99 +1208,612 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/role-resources", "host": ["{{baseUrl}}"], "path": ["role-resources"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Role Resource By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "{{roleResourceId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Resources By Role Id (Translated)",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources", "host": ["{{baseUrl}}"], "path": ["role-resources", "by-role", "{{roleId}}", "resources"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "by-role",
+                "{{roleId}}",
+                "resources"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Bulk Create Role Resources",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources/{{resourceId}}/bulk?recursive=1",
-              "host": ["{{baseUrl}}"],
-              "path": ["role-resources", "by-role", "{{roleId}}", "resources", "{{resourceId}}", "bulk"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "by-role",
+                "{{roleId}}",
+                "resources",
+                "{{resourceId}}",
+                "bulk"
+              ],
               "query": [
-                { "key": "recursive", "value": "1" }
+                {
+                  "key": "recursive",
+                  "value": "1"
+                }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Bulk Delete Role Resources",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources/{{resourceId}}/bulk", "host": ["{{baseUrl}}"], "path": ["role-resources", "by-role", "{{roleId}}", "resources", "{{resourceId}}", "bulk"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/by-role/{{roleId}}/resources/{{resourceId}}/bulk",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "by-role",
+                "{{roleId}}",
+                "resources",
+                "{{resourceId}}",
+                "bulk"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Role Resource",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"roleId\": \"{{roleId}}\",\n  \"resourceId\": \"{{resourceId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/role-resources", "host": ["{{baseUrl}}"], "path": ["role-resources"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Role Resource",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"roleId\": \"{{roleId}}\",\n  \"resourceId\": \"{{resourceId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "{{roleResourceId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Role Resource",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Accept-Language", "value": "{{acceptLanguage}}" }
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
             ],
-            "url": { "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}", "host": ["{{baseUrl}}"], "path": ["role-resources", "{{roleResourceId}}"] }
-          }
+            "url": {
+              "raw": "{{baseUrl}}/role-resources/{{roleResourceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-resources",
+                "{{roleResourceId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    },
+    {
+      "name": "Apps",
+      "item": [
+        {
+          "name": "List Apps",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/apps",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apps"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get App By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/apps/{{appId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apps",
+                "{{appId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create App",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"APP_CRM\",\n  \"name\": \"CRM Application\",\n  \"description\": \"Customer Relationship Management System\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/apps",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apps"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update App",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"APP_CRM_UPD\",\n  \"name\": \"CRM Application Updated\",\n  \"description\": \"Updated Description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/apps/{{appId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apps",
+                "{{appId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete App",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/apps/{{appId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apps",
+                "{{appId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Menus",
+      "item": [
+        {
+          "name": "List Menus",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/menus/{{menuId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus",
+                "{{menuId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menus By App Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/menus/by-app/{{appId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus",
+                "by-app",
+                "{{appId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Menu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appId\": \"{{appId}}\",\n  \"code\": \"MENU_SEC\",\n  \"name\": \"Security Menu\",\n  \"description\": \"Security and access management menu\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Menu",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appId\": \"{{appId}}\",\n  \"code\": \"MENU_SEC_UPD\",\n  \"name\": \"Security Menu Updated\",\n  \"description\": \"Updated Description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/menus/{{menuId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus",
+                "{{menuId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Menu",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "{{acceptLanguage}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/menus/{{menuId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus",
+                "{{menuId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MzQ4OTY0NTY1NDI0NTM3OSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi16aXRhZGVsLmtwbGlhbi5jb20iLCJzdWIiOiIzNjkwMTgyNjUxMzQ5NTY4MDMiLCJhdWQiOlsiMzY4NzM5NTYyMTkwNTM2NzA4IiwiMzY4NzQwNzUwNDcwNDc5ODc2IiwiMzY4NzM4NTE1ODYyNjgzNjUyIiwiMzUzNDg5NjQzODc1OTkxNTU1Il0sImV4cCI6MTc3ODcyODA4NiwiaWF0IjoxNzc4Njg0ODg2LCJuYmYiOjE3Nzg2ODQ4ODYsImNsaWVudF9pZCI6IjM2ODczOTU2MjE5MDUzNjcwOCIsImp0aSI6IlYyXzM3Mjc3MTA5NDc5ODUzMjg2Ny1hdF8zNzI3NzEwOTQ3OTg1OTg0MDMifQ.aHmgp0xkASPamkj44FHT3ArT07ZTOq6GwskK912jiBOQ9T_H-ST0Gh9EIEG7hxXXFlmjhfZjSnx7r_oPM5ZVAj71lHArwxsiGdHtfIJTCzgqvLsjnGNjvC1IqAlMP60gpJqLWeX6vrIGqj6IRH4FHSwjjUg7Ow-6s6fcah9i7sBPaOio_f2NL7hhkCd92M2aCfdN60Y0msE-yNw0k3XgDwpwXmq1lzUlJSefMaRdejOTEC1_G5e245UKAn9OSUuWLHgGDInMeIHxcK-tB7d9p399TLOBBc_BE1KPtD_liAsuDbAsWWXpQZ1zFuwl3FCyKoEmfcGbt3_-wmiZ0jy9fg",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8001/api/v1"
+    },
+    {
+      "key": "acceptLanguage",
+      "value": "es-ES"
+    },
+    {
+      "key": "interinId",
+      "value": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "key": "appId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "menuId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "profileId",
+      "value": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "key": "roleId",
+      "value": "00000000-0000-0000-0000-000000000003"
+    },
+    {
+      "key": "resourceId",
+      "value": "00000000-0000-0000-0000-000000000004"
+    },
+    {
+      "key": "userProfileId",
+      "value": "00000000-0000-0000-0000-000000000005"
+    },
+    {
+      "key": "profileRoleId",
+      "value": "00000000-0000-0000-0000-000000000006"
+    },
+    {
+      "key": "roleResourceId",
+      "value": "00000000-0000-0000-0000-000000000007"
+    },
+    {
+      "key": "userCode",
+      "value": "USR001"
+    },
+    {
+      "key": "translationDomain",
+      "value": "parameter"
+    },
+    {
+      "key": "translationEntity",
+      "value": "parameter"
+    },
+    {
+      "key": "translationEntityId",
+      "value": "a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53"
+    },
+    {
+      "key": "translationLanguageCode",
+      "value": "es-ES"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ]
 }

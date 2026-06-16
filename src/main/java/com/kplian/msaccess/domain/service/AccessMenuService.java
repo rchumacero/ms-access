@@ -2,7 +2,7 @@ package com.kplian.msaccess.domain.service;
 
 import com.kplian.msaccess.api.service.I18nService;
 import com.kplian.msaccess.domain.exception.I18nBusinessException;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.infrastructure.persistence.repository.ResourceRepository;
 import com.kplian.msaccess.infrastructure.persistence.repository.RoleResourceRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,8 +25,12 @@ public class AccessMenuService {
     @Inject
     I18nService i18nService;
 
-    public List<ResourceEntity> findAllResources() {
-        return resourceRepository.find("deletedAt is null").list();
+    public List<Resource> findAllResources() {
+        return resourceRepository.findAllWithMenu();
+    }
+
+    public List<Resource> findResourcesByMenuCode(String menuCode) {
+        return resourceRepository.findByMenuCode(menuCode);
     }
 
     public Set<UUID> findAllowedResourceIdsByUserCode(String userCode) {

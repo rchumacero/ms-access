@@ -29,6 +29,8 @@ public class ResourceRequestDTO {
 
     private UUID resourceId;
 
+    private UUID menuId;
+
     public String getCode() {
         return code;
     }
@@ -91,5 +93,13 @@ public class ResourceRequestDTO {
 
     public void setResourceId(UUID resourceId) {
         this.resourceId = resourceId;
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(UUID menuId) {
+        this.menuId = menuId;
     }
 }

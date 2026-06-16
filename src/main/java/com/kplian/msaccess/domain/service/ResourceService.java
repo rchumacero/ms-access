@@ -2,7 +2,7 @@ package com.kplian.msaccess.domain.service;
 
 import com.kplian.msaccess.api.service.I18nService;
 import com.kplian.msaccess.domain.exception.I18nBusinessException;
-import com.kplian.msaccess.domain.model.ResourceEntity;
+import com.kplian.msaccess.domain.model.Resource;
 import com.kplian.msaccess.domain.model.LocalTranslation;
 import com.kplian.msaccess.infrastructure.persistence.repository.ResourceRepository;
 import com.kplian.msaccess.infrastructure.persistence.repository.LocalTranslationRepository;
@@ -34,27 +34,30 @@ public class ResourceService {
     @Inject
     UserContext userContext;
 
-    public List<ResourceEntity> findAll() {
-        return resourceRepository.find("deletedAt is null").list();
+    @Inject
+    MenuService menuService;
+
+    public List<Resource> findAll() {
+        return resourceRepository.findAllWithMenu();
     }
 
-    public ResourceEntity findById(UUID id) {
+    public Resource findById(UUID id) {
         return resourceRepository.findByIdOptional(id)
-            .orElseThrow(() -> new I18nBusinessException(
-                i18nService,
-                "error.resource.not_found",
-                "RESOURCE_NOT_FOUND",
-                id
-            ));
+                .orElseThrow(() -> new I18nBusinessException(
+                        i18nService,
+                        "error.resource.not_found",
+                        "RESOURCE_NOT_FOUND",
+                        id));
     }
 
-    public Map<String, Map<String, Object>> getTranslationsForResources(List<ResourceEntity> resources, String domain, String entity) {
+    public Map<String, Map<String, Object>> getTranslationsForResources(List<Resource> resources, String domain,
+            String entity) {
         if (resources == null || resources.isEmpty()) {
             return Map.of();
         }
         List<String> entityIds = resources.stream()
-            .map(resource -> resource.getId().toString())
-            .collect(Collectors.toList());
+                .map(resource -> resource.getId().toString())
+                .collect(Collectors.toList());
 
         Locale locale = i18nService.getLocale();
         String languageTag = locale == null ? null : locale.toLanguageTag();
@@ -69,7 +72,8 @@ public class ResourceService {
 
         // 2. Fetch specific language translations and override (e.g. "es-ES")
         if (languageTag != null && !languageTag.isBlank() && !languageTag.equals(languageShort)) {
-            Map<String, Map<String, Object>> specificTranslations = fetchTranslations(domain, entity, languageTag, entityIds);
+            Map<String, Map<String, Object>> specificTranslations = fetchTranslations(domain, entity, languageTag,
+                    entityIds);
             for (Map.Entry<String, Map<String, Object>> entry : specificTranslations.entrySet()) {
                 translations.put(entry.getKey(), entry.getValue());
             }
@@ -78,39 +82,45 @@ public class ResourceService {
         return translations;
     }
 
-    public List<ResourceEntity> findChildren(UUID parentId) {
+    public List<Resource> findChildren(UUID parentId) {
         findById(parentId);
         return resourceRepository.findChildren(parentId);
     }
 
-    public ResourceEntity create(ResourceEntity resource) {
+    public Resource create(Resource resource, UUID menuId) {
         validateResource(resource);
         if (resourceRepository.existsByCode(resource.getCode())) {
             throw new I18nBusinessException(
-                i18nService,
-                "error.resource.code.exists",
-                "RESOURCE_CODE_EXISTS",
-                resource.getCode()
-            );
+                    i18nService,
+                    "error.resource.code.exists",
+                    "RESOURCE_CODE_EXISTS",
+                    resource.getCode());
         }
         validateParentResource(resource.getResourceId());
+        if (menuId != null) {
+            resource.setMenu(menuService.findById(menuId));
+        }
         resource.setAuditForCreate(getCurrentUser());
         resourceRepository.persist(resource);
         return resource;
     }
 
-    public ResourceEntity update(UUID id, ResourceEntity resource) {
+    public Resource update(UUID id, Resource resource, UUID menuId) {
         validateResource(resource);
-        ResourceEntity existing = findById(id);
+        Resource existing = findById(id);
         if (!existing.getCode().equals(resource.getCode()) && resourceRepository.existsByCode(resource.getCode())) {
             throw new I18nBusinessException(
-                i18nService,
-                "error.resource.code.exists",
-                "RESOURCE_CODE_EXISTS",
-                resource.getCode()
-            );
+                    i18nService,
+                    "error.resource.code.exists",
+                    "RESOURCE_CODE_EXISTS",
+                    resource.getCode());
         }
         validateParentResource(resource.getResourceId());
+        if (menuId != null) {
+            existing.setMenu(menuService.findById(menuId));
+        } else {
+            existing.setMenu(null);
+        }
         existing.setCode(resource.getCode());
         existing.setName(resource.getName());
         existing.setDescription(resource.getDescription());
@@ -124,29 +134,27 @@ public class ResourceService {
     }
 
     public void delete(UUID id) {
-        ResourceEntity resource = findById(id);
+        Resource resource = findById(id);
         resource.setAuditForDelete(getCurrentUser());
     }
 
-    private void validateResource(ResourceEntity resource) {
+    private void validateResource(Resource resource) {
         if (resource == null) {
             throw new I18nBusinessException(
-                i18nService,
-                "error.resource.invalid",
-                "INVALID_RESOURCE"
-            );
+                    i18nService,
+                    "error.resource.invalid",
+                    "INVALID_RESOURCE");
         }
     }
 
     private void validateParentResource(UUID parentId) {
         if (parentId != null) {
             resourceRepository.findByIdOptional(parentId)
-                .orElseThrow(() -> new I18nBusinessException(
-                    i18nService,
-                    "error.resource.not_found",
-                    "RESOURCE_NOT_FOUND",
-                    parentId
-                ));
+                    .orElseThrow(() -> new I18nBusinessException(
+                            i18nService,
+                            "error.resource.not_found",
+                            "RESOURCE_NOT_FOUND",
+                            parentId));
         }
     }
 
@@ -155,16 +163,15 @@ public class ResourceService {
     }
 
     private Map<String, Map<String, Object>> fetchTranslations(
-        String domain,
-        String entity,
-        String languageCode,
-        List<String> entityIds
-    ) {
+            String domain,
+            String entity,
+            String languageCode,
+            List<String> entityIds) {
         if (languageCode == null || languageCode.isBlank()) {
             return Map.of();
         }
         List<LocalTranslation> translations = localTranslationRepository
-            .findByDomainEntityLanguageAndEntityIds(domain, entity, languageCode, entityIds);
+                .findByDomainEntityLanguageAndEntityIds(domain, entity, languageCode, entityIds);
         Map<String, Map<String, Object>> map = new HashMap<>();
         for (LocalTranslation translation : translations) {
             String json = translation.getText();
