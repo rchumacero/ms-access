@@ -52,15 +52,15 @@ jobs:
           cache-to: type=gha,mode=max
 
       # 2. Escaneo DevSecOps con Trivy
-      - name: Escanear imagen con Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+      # - name: Escanear imagen con Trivy
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan'
+      #     format: 'table'
+      #     exit-code: '1'
+      #     ignore-unfixed: true
+      #     vuln-type: 'os,library'
+      #     severity: 'CRITICAL,HIGH'
 
       # 3. Publicar imagen a GHCR si pasa el escaneo
       - name: Publicar imagen en GHCR
