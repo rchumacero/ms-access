@@ -1,0 +1,100 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  REGISTRY: ghcr.io
+  # Genera la referencia ghcr.io/usuario/repositorio
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-scan-and-push:
+    name: Build & Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Iniciar sesión en GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extraer metadatos para Docker (tags/labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,format=short
+
+      # 1. Compilación local para validación
+      - name: Construir imagen Docker para escaneo
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # 2. Escaneo DevSecOps con Trivy
+      - name: Escanear imagen con Trivy (DevSecOps)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      # 3. Publicación oficial si pasa el análisis de vulnerabilidades
+      - name: Publicar imagen final en GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Deploy to VPS
+    needs: build-scan-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conectar y Desplegar en VPS vía SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            # Autenticarse en GHCR dentro del VPS
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Ir al directorio del docker-compose
+            cd /opt/apps
+            
+            # Descargar la nueva imagen del microservicio e iniciar
+            docker compose pull ${{ github.event.repository.name }}
+            docker compose up -d ${{ github.event.repository.name }}
+            
+            # Limpiar imágenes obsoletas o no utilizadas para ahorrar espacio
+            docker image prune -f
