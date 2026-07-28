@@ -1,31 +1,34 @@
 services:
   ms-access:
-    # Apunta a la imagen publicada en GitHub Container Registry
-    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kplian/ms-access:latest
     container_name: container-ms-access
     environment:
       - QUARKUS_HTTP_PORT=8001
-
+      
       # Database Configuration
       - DB_HOST=${DB_HOST:-164.68.96.88}
       - DB_PORT=${DB_PORT:-2101}
       - DB_NAME=${DB_NAME:-dbqk}
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
-
-      # Quarkus Hibernate
+      
+      # Quarkus Hibernate (Generation mode: none, update, drop-and-create)
       - QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION=${DB_GENERATION:-update}
-
+      
       # OpenTelemetry
       - OTEL_ENABLED=${OTEL_ENABLED:-false}
-
+      
     ports:
       - "8001:8001"
-
+    
     networks:
-      - nt_microservices
+      - proxy-net
     restart: unless-stopped
 
 networks:
-  nt_microservices:
+  proxy-net:
     external: true
+
