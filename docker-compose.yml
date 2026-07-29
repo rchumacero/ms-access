@@ -15,7 +15,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
 
       # Quarkus Hibernate
-      - QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION=${DB_GENERATION:-true}
+      - QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION=${DB_GENERATION:-update}
 
       # OpenTelemetry
       - OTEL_ENABLED=${OTEL_ENABLED:-false}
