@@ -14,6 +14,9 @@ RUN mvn package -DskipTests -B
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /deployments
 
+#Port definition
+ARG APP_INTERNAL_PORT=8001
+
 # Crear usuario sin privilegios para producción
 RUN addgroup -S quarkus && adduser -S quarkus -G quarkus
 
@@ -31,6 +34,6 @@ ENV LANGUAGE='en_US:en' \
     JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager" \
     JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-EXPOSE 8001
+EXPOSE ${APP_INTERNAL_PORT}
 
 CMD ["java", "-jar", "/deployments/quarkus-run.jar"]

@@ -1,99 +1,140 @@
-name: CI/CD Pipeline
+name: CI/CD Multi-Environment Pipeline
 
 on:
   push:
     branches:
-      - main
+      - develop    # Entorno de Test
+      - main       # Entorno de Producción
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-scan-and-deploy:
-    name: Build, Scan & Deploy
+  build-and-push:
+    name: Build & Push Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Checkout del código (incluye docker-compose.yml)
+      - name: Checkout del código
         uses: actions/checkout@v4
 
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Iniciar sesión en GitHub Container Registry
+      - name: Iniciar sesión en GHCR
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extraer metadatos para Docker
+      - name: Extraer metadatos para Docker (tags por rama)
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
-            type=sha,format=short
+            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
-      # 1. Compilar imagen localmente en el Runner
-      - name: Construir imagen local para escaneo
+      - name: Construir y publicar imagen Docker
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: src/main/docker/Dockerfile
-          load: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # 2. Escaneo DevSecOps con Trivy
-      # - name: Escanear imagen con Trivy
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test-scan'
-      #     format: 'table'
-      #     exit-code: '1'
-      #     ignore-unfixed: true
-      #     vuln-type: 'os,library'
-      #     severity: 'CRITICAL,HIGH'
-
-      # 3. Publicar imagen a GHCR si pasa el escaneo
-      - name: Publicar imagen en GHCR
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: src/main/docker/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      # 4. Configurar SSH para conexión remota con Docker
-      - name: Configurar llave SSH para Docker Context
+  deploy-test:
+    name: Deploy to Test
+    needs: build-and-push
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    # Selecciona el entorno de GitHub Secrets para Test
+    environment: test
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
-      # 5. Crear Contexto de Docker Remoto apuntando al VPS
-      - name: Crear Contexto de Docker Remoto
+      - name: Crear Contexto de Docker
         run: |
-          docker context create vps-remote --docker "host=ssh://${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PORT }}"
+          docker context create vps-remote --docker "host=ssh://${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PORT }}"
           docker context use vps-remote
-
-      # 6. Autenticar el Docker Daemon del VPS en GHCR
-      - name: Autenticar VPS en GHCR
-        run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 7. Ejecutar Deploy usando el docker-compose.yml del repositorio
-      - name: Desplegar con Docker Compose Remoto
+      - name: Generar .env para TEST
+        run: |
+          cat <<EOF > .env
+          CONTAINER_NAME=container-ms-access-test
+          IMAGE_TAG=develop
+          APP_PORT=${{ secrets.APP_PORT }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          EOF
+
+      - name: Desplegar en Ambiente Test
         run: |
           docker compose pull
-          docker compose up -d --remove-orphans
+          docker compose --env-file .env up -d --remove-orphans
+          docker image prune -f
+
+  deploy-prod:
+    name: Deploy to Production
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Selecciona el entorno de GitHub Secrets para Producción
+    environment: production
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Crear Contexto de Docker
+        run: |
+          docker context create vps-remote --docker "host=ssh://${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PORT }}"
+          docker context use vps-remote
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Generar .env para PRODUCCIÓN
+        run: |
+          cat <<EOF > .env
+          CONTAINER_NAME=container-ms-access-prod
+          IMAGE_TAG=latest
+          APP_PORT=${{ secrets.APP_PORT }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          EOF
+
+      - name: Desplegar en Ambiente Producción
+        run: |
+          docker compose pull
+          docker compose --env-file .env up -d --remove-orphans
           docker image prune -f
