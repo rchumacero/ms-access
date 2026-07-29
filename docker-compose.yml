@@ -25,8 +25,11 @@ services:
 
     networks:
       - nt_microservices
+      - nt_databases
     restart: unless-stopped
 
 networks:
   nt_microservices:
+    external: true
+  nt_databases:
     external: true
