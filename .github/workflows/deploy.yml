@@ -88,6 +88,8 @@ jobs:
           DB_NAME=${{ secrets.DB_NAME }}
           DB_USERNAME=${{ secrets.DB_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          APP_INTERNAL_PORT=${{ secrets.APP_INTERNAL_PORT }}
+          APP_EXTERNAL_PORT=${{ secrets.APP_EXTERNAL_PORT }}
           EOF
 
       - name: Desplegar en Ambiente Test
@@ -132,6 +134,8 @@ jobs:
           DB_NAME=${{ secrets.DB_NAME }}
           DB_USERNAME=${{ secrets.DB_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          APP_INTERNAL_PORT=${{ secrets.APP_INTERNAL_PORT }}
+          APP_EXTERNAL_PORT=${{ secrets.APP_EXTERNAL_PORT }}
           EOF
 
       - name: Desplegar en Ambiente Producción
