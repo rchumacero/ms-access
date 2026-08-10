@@ -1,6 +1,7 @@
 package com.kplian.msaccess.api.resource;
 
 import com.kplian.msaccess.api.dto.request.ResourceRequestDTO;
+import com.kplian.msaccess.api.dto.request.CloneResourceRequestDTO;
 import com.kplian.msaccess.api.dto.response.ResourceResponseDTO;
 import com.kplian.msaccess.api.dto.response.ResourceTreeSlimResponseDTO;
 import com.kplian.msaccess.api.mapper.ResourceMapper;
@@ -123,5 +124,18 @@ public class ResourceResource {
             @Parameter(description = "Resource ID", required = true) @PathParam("id") UUID id) {
         resourceService.delete(id);
         return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{resourceId}/clone")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Clone recursively menu structure from resourceId")
+    public Response clone(
+            @Parameter(description = "Resource ID to clone", required = true) @PathParam("resourceId") UUID resourceId,
+            @Valid CloneResourceRequestDTO requestDTO) {
+        Resource clonedRoot = resourceService.cloneHierarchy(resourceId, requestDTO.getMenuId());
+        ResourceResponseDTO responseDTO = resourceMapper.toResponseDTO(clonedRoot);
+        return Response.status(Response.Status.CREATED).entity(responseDTO).build();
     }
 }

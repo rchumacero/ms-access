@@ -3,7 +3,9 @@ package com.kplian.msaccess.domain.service;
 import com.kplian.msaccess.api.service.I18nService;
 import com.kplian.msaccess.domain.exception.I18nBusinessException;
 import com.kplian.msaccess.domain.model.Resource;
+import com.kplian.msaccess.domain.model.Menu;
 import com.kplian.msaccess.domain.model.LocalTranslation;
+import com.kplian.msaccess.domain.model.LocalTranslationId;
 import com.kplian.msaccess.infrastructure.persistence.repository.ResourceRepository;
 import com.kplian.msaccess.infrastructure.persistence.repository.LocalTranslationRepository;
 import com.kplian.msaccess.util.UserContext;
@@ -11,10 +13,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import io.vertx.core.json.JsonObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -182,5 +187,111 @@ public class ResourceService {
             map.put(translation.getEntityId(), obj.getMap());
         }
         return map;
+    }
+
+    public Resource cloneHierarchy(UUID sourceResourceId, UUID targetMenuId) {
+        Resource source = findById(sourceResourceId);
+        Menu targetMenu = menuService.findById(targetMenuId);
+
+        // Fetch all active resources to build the hierarchy tree in memory
+        List<Resource> allResources = resourceRepository.findAllWithMenu();
+        Map<UUID, List<Resource>> parentToChildren = allResources.stream()
+                .filter(r -> r.getResourceId() != null)
+                .collect(Collectors.groupingBy(Resource::getResourceId));
+
+        List<Resource> hierarchy = new ArrayList<>();
+        hierarchy.add(source);
+        collectDescendants(source.getId(), parentToChildren, hierarchy);
+
+        Map<UUID, Resource> oldIdToCloneMap = new HashMap<>();
+        Map<UUID, UUID> oldToNewIdMap = new HashMap<>();
+        List<Resource> clones = new ArrayList<>();
+        Set<String> generatedCodes = new HashSet<>();
+
+        for (Resource original : hierarchy) {
+            Resource clone = new Resource();
+            clone.setCode(generateUniqueCode(original.getCode(), generatedCodes));
+            clone.setName(original.getName());
+            clone.setDescription(original.getDescription());
+            clone.setType(original.getType());
+            clone.setRestricted(original.getRestricted());
+            clone.setEndpoint(original.getEndpoint());
+            clone.setModuleCode(original.getModuleCode());
+            clone.setMenu(targetMenu);
+            clone.setAuditForCreate(getCurrentUser());
+
+            if (original.getId().equals(sourceResourceId)) {
+                clone.setResourceId(null);
+            } else {
+                Resource clonedParent = oldIdToCloneMap.get(original.getResourceId());
+                if (clonedParent != null) {
+                    clone.setResourceId(clonedParent.getId());
+                }
+            }
+
+            resourceRepository.persist(clone);
+
+            oldIdToCloneMap.put(original.getId(), clone);
+            oldToNewIdMap.put(original.getId(), clone.getId());
+            clones.add(clone);
+        }
+
+        // Clone translations
+        List<String> originalIdsStr = hierarchy.stream()
+                .map(r -> r.getId().toString())
+                .collect(Collectors.toList());
+        List<LocalTranslation> originalTranslations = localTranslationRepository.list(
+                "id.domain = ?1 and id.entityName = ?2 and id.entityId in ?3",
+                "access", "resource", originalIdsStr
+        );
+
+        for (LocalTranslation translation : originalTranslations) {
+            UUID newId = oldToNewIdMap.get(UUID.fromString(translation.getEntityId()));
+            if (newId != null) {
+                LocalTranslation cloneTranslation = new LocalTranslation();
+                LocalTranslationId cloneId = new LocalTranslationId(
+                        translation.getDomain(),
+                        translation.getEntity(),
+                        newId.toString(),
+                        translation.getLanguageCode()
+                );
+                cloneTranslation.setId(cloneId);
+                cloneTranslation.setText(translation.getText());
+                localTranslationRepository.persist(cloneTranslation);
+            }
+        }
+
+        // Return the root cloned resource
+        return clones.get(0);
+    }
+
+    private void collectDescendants(UUID parentId, Map<UUID, List<Resource>> parentToChildren, List<Resource> collected) {
+        List<Resource> children = parentToChildren.getOrDefault(parentId, List.of());
+        for (Resource child : children) {
+            collected.add(child);
+            collectDescendants(child.getId(), parentToChildren, collected);
+        }
+    }
+
+    private String generateUniqueCode(String originalCode, Set<String> generatedCodes) {
+        String baseCode = originalCode;
+        if (baseCode.length() > 40) {
+            baseCode = baseCode.substring(0, 40);
+        }
+        String targetCode = baseCode + "_CLONE";
+        int counter = 1;
+        while (resourceRepository.existsByCode(targetCode) || generatedCodes.contains(targetCode)) {
+            String suffix = "_" + counter;
+            int maxBaseLength = 50 - "_CLONE".length() - suffix.length();
+            if (originalCode.length() > maxBaseLength) {
+                baseCode = originalCode.substring(0, maxBaseLength);
+            } else {
+                baseCode = originalCode;
+            }
+            targetCode = baseCode + "_CLONE" + suffix;
+            counter++;
+        }
+        generatedCodes.add(targetCode);
+        return targetCode;
     }
 }
