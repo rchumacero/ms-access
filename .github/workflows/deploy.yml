@@ -80,7 +80,7 @@ jobs:
       - name: Generar .env para TEST
         run: |
           cat <<EOF > .env
-          CONTAINER_NAME=container-ms-access-test
+          CONTAINER_NAME=cont-kp-ms-access-test
           IMAGE_TAG=develop
           APP_PORT=${{ secrets.APP_PORT }}
           DB_HOST=${{ secrets.DB_HOST }}
@@ -126,7 +126,7 @@ jobs:
       - name: Generar .env para PRODUCCIÓN
         run: |
           cat <<EOF > .env
-          CONTAINER_NAME=container-ms-access-prod
+          CONTAINER_NAME=cont-kp-ms-access-prod
           IMAGE_TAG=latest
           APP_PORT=${{ secrets.APP_PORT }}
           DB_HOST=${{ secrets.DB_HOST }}
