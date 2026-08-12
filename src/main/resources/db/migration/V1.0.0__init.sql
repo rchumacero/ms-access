@@ -168,7 +168,7 @@ INSERT INTO tapp (id,code,"name",description,created_at,created_by,updated_at,up
 
 INSERT INTO tmenu (id,app_id,code,"name",description,created_at,created_by,updated_at,updated_by,deleted_at,deleted_by,status) VALUES
 	 ('80bf089b-bf98-4088-9b99-0409773e5c67'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'WEB_APP','Web Application','Menu for web application','2026-05-13 20:52:34.369','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE'),
-	 ('1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP','Menu for mobile application','2026-05-13 20:53:05.020','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE'),
+	 ('1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP','Mobile Application','Menu for mobile application','2026-05-13 20:53:05.020','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE'),
 	 ('da541fb9-3e51-47a8-8e68-f0f13e2bb1b2'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP_BOTTOM','Mobile Application for footer','Menu for mobile application for footer','2026-05-13 20:55:19.284','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE');
 
 INSERT INTO tprofile (created_at,deleted_at,updated_at,id,code,module_code,status,vendor_code,created_by,deleted_by,updated_by,"name") VALUES
