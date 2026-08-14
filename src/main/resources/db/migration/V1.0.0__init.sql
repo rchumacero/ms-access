@@ -1,8 +1,8 @@
 -- 1. Enable pgcrypto extension for UUID generation if needed
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 2. Create tables if they do not exist
-CREATE TABLE IF NOT EXISTS tapp (
+-- 2. Create tables
+CREATE TABLE tapp (
     id uuid NOT NULL,
     code varchar(50) NOT NULL,
     name varchar(255) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS tapp (
     CONSTRAINT tapp_code_key UNIQUE (code)
 );
 
-CREATE TABLE IF NOT EXISTS tmenu (
+CREATE TABLE tmenu (
     id uuid NOT NULL,
     app_id uuid NOT NULL,
     code varchar(50) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS tmenu (
     CONSTRAINT fk_tmenu_app FOREIGN KEY (app_id) REFERENCES tapp(id)
 );
 
-CREATE TABLE IF NOT EXISTS tprofile (
+CREATE TABLE tprofile (
     id uuid NOT NULL,
     code varchar(50) NOT NULL,
     name varchar(255) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS tprofile (
     CONSTRAINT tprofile_code_key UNIQUE (code)
 );
 
-CREATE TABLE IF NOT EXISTS trole (
+CREATE TABLE trole (
     id uuid NOT NULL,
     code varchar(50) NOT NULL,
     name varchar(255) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS trole (
     CONSTRAINT trole_code_key UNIQUE (code)
 );
 
-CREATE TABLE IF NOT EXISTS tprofile_role (
+CREATE TABLE tprofile_role (
     id uuid NOT NULL,
     profile_id uuid NOT NULL,
     role_id uuid NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS tprofile_role (
     CONSTRAINT tprofile_role_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS tresource (
+CREATE TABLE tresource (
     id uuid NOT NULL,
     code varchar(50) NOT NULL,
     description varchar(500),
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS tresource (
     CONSTRAINT fk_tresource_menu FOREIGN KEY (menu_id) REFERENCES tmenu(id)
 );
 
-CREATE TABLE IF NOT EXISTS trole_resource (
+CREATE TABLE trole_resource (
     id uuid NOT NULL,
     role_id uuid NOT NULL,
     resource_id uuid NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS trole_resource (
     CONSTRAINT trole_resource_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS tuser_profile (
+CREATE TABLE tuser_profile (
     id uuid NOT NULL,
     user_code varchar(50) NOT NULL,
     profile_id uuid NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS tuser_profile (
     CONSTRAINT tuser_profile_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS tinterin (
+CREATE TABLE tinterin (
     id uuid NOT NULL,
     user_code varchar(50) NOT NULL,
     user_interin_id varchar(50) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS tinterin (
     CONSTRAINT tinterin_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS tlocal_translation (
+CREATE TABLE tlocal_translation (
     domain varchar(50) NOT NULL,
     entity varchar(50) NOT NULL,
     entity_id varchar(50) NOT NULL,
@@ -162,16 +162,14 @@ CREATE TABLE IF NOT EXISTS tlocal_translation (
     CONSTRAINT tlocal_translation_pkey PRIMARY KEY (language_code, domain, entity, entity_id)
 );
 
--- 3. Seed data (with ON CONFLICT DO NOTHING)
+-- 3. Seed data
 INSERT INTO tapp (id,code,"name",description,created_at,created_by,updated_at,updated_by,deleted_at,deleted_by,status) VALUES
-	 ('8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'CRM','CRM Application','Customer Relationship Management System','2026-05-13 20:51:29.599697','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE')
-ON CONFLICT (id) DO NOTHING;
+	 ('8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'CRM','CRM Application','Customer Relationship Management System','2026-05-13 20:51:29.599697','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE');
 
 INSERT INTO tmenu (id,app_id,code,"name",description,created_at,created_by,updated_at,updated_by,deleted_at,deleted_by,status) VALUES
 	 ('80bf089b-bf98-4088-9b99-0409773e5c67'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'WEB_APP','Web Application','Menu for web application','2026-05-13 20:52:34.369','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE'),
 	 ('1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP','Mobile Application','Menu for mobile application','2026-05-13 20:53:05.020','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE'),
-	 ('da541fb9-3e51-47a8-8e68-f0f13e2bb1b2'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP_BOTTOM','Mobile Application for footer','Menu for mobile application for footer','2026-05-13 20:55:19.284','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE')
-ON CONFLICT (id) DO NOTHING;
+	 ('da541fb9-3e51-47a8-8e68-f0f13e2bb1b2'::uuid,'8ce977fc-67ad-4452-9ce5-b2748f8d742c'::uuid,'MOBILE_APP_BOTTOM','Mobile Application for footer','Menu for mobile application for footer','2026-05-13 20:55:19.284','rodrychm@gmail.com',NULL,NULL,NULL,NULL,'ACTIVE');
 
 INSERT INTO tprofile (created_at,deleted_at,updated_at,id,code,module_code,status,vendor_code,created_by,deleted_by,updated_by,"name") VALUES
 	 ('2026-02-06 19:51:17.188',NULL,NULL,'6be11d65-f359-4573-b4fc-c6b2d4186773'::uuid,'PROF_WAREHOUSE_ADMIN','WAH','ACTIVE','','system',NULL,NULL,'Warehouse Administrator'),
@@ -183,12 +181,9 @@ INSERT INTO tprofile (created_at,deleted_at,updated_at,id,code,module_code,statu
 	 ('2026-06-18 12:01:06.831',NULL,NULL,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'PROF_WAREHOUSE_ADMIN_M','WAH','ACTIVE','','rodrychm@gmail.com',NULL,NULL,'Admin Profile for Warehouse module mobile'),
 	 ('2026-06-30 12:35:28.969',NULL,NULL,'ccd924f5-8c29-44dd-8be3-076e2780bd2b'::uuid,'PROF_PARAMETER_ADMIN_M','PARAM','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Parameter module mobile'),
 	 ('2026-07-13 12:24:23.039',NULL,NULL,'feee530c-717c-41e1-ab32-e5c377ed5eb0'::uuid,'PROF_WFL_M_ADMIN','WFL','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Workflow module mobile'),
-	 ('2026-07-23 10:29:26.640',NULL,NULL,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'PROF_ACCESS_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Access module')
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-07-23 10:29:26.640',NULL,NULL,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'PROF_ACCESS_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Access module');
 INSERT INTO tprofile (created_at,deleted_at,updated_at,id,code,module_code,status,vendor_code,created_by,deleted_by,updated_by,"name") VALUES
-	 ('2026-07-23 10:30:26.274',NULL,NULL,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'PROF_ACCESS_M_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Access mobile module')
-ON CONFLICT (id) DO NOTHING;
+	 ('2026-07-23 10:30:26.274',NULL,NULL,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'PROF_ACCESS_M_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin Profile for Access mobile module');
 
 INSERT INTO trole (created_at,deleted_at,updated_at,id,code,module_code,status,vendor_code,created_by,deleted_by,updated_by,"name") VALUES
 	 ('2026-02-06 18:02:35.610',NULL,NULL,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ROLE_WAREHOUSE_ADMIN','WAH','ACTIVE','','system',NULL,NULL,'Warehouse Administrator'),
@@ -200,8 +195,7 @@ INSERT INTO trole (created_at,deleted_at,updated_at,id,code,module_code,status,v
 	 ('2026-06-30 12:34:37.032',NULL,NULL,'191bc64f-0649-4918-9887-ac054d2c0bdf'::uuid,'ROLE_PARAMETER_M_ADMIN','PARAM','ACTIVE','','dev-user',NULL,NULL,'Admin role for Prameter Module Mobile'),
 	 ('2026-07-13 12:22:29.771',NULL,NULL,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ROLE_WFL_M_ADMIN','WFL','ACTIVE','','dev-user',NULL,NULL,'Admin role for Workflow Module Mobile'),
 	 ('2026-07-23 10:31:30.959',NULL,NULL,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ROLE_ACCESS_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin role for Access Module'),
-	 ('2026-07-23 10:31:50.566',NULL,NULL,'68fa4a81-c8b4-43cd-8c87-0c5a5361fd76'::uuid,'ROLE_ACCESS_M_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin role for Access mobile Module')
-ON CONFLICT (id) DO NOTHING;
+	 ('2026-07-23 10:31:50.566',NULL,NULL,'68fa4a81-c8b4-43cd-8c87-0c5a5361fd76'::uuid,'ROLE_ACCESS_M_ADMIN','ACC','ACTIVE','','dev-user',NULL,NULL,'Admin role for Access mobile Module');
 
 INSERT INTO tprofile_role (created_at,deleted_at,updated_at,id,profile_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-20 15:08:58.316',NULL,NULL,'2d77fcd2-ee2c-43aa-be5e-bf1c491c1d5b'::uuid,'8b9885cc-de7f-4f2d-973f-b540ca1f03af'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -213,13 +207,10 @@ INSERT INTO tprofile_role (created_at,deleted_at,updated_at,id,profile_id,role_i
 	 ('2026-06-17 17:47:11.084',NULL,NULL,'b0064b1a-d4ed-4f60-97fc-a2110af8c12b'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'50a3b65f-3f08-4e21-a842-0cc4ee615078'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-18 12:06:47.700',NULL,NULL,'4098d192-7642-4293-bbbf-fec3fa8dd732'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-30 12:36:08.975',NULL,NULL,'ac519b44-8b02-40d3-bb93-52da8748c2b8'::uuid,'ccd924f5-8c29-44dd-8be3-076e2780bd2b'::uuid,'191bc64f-0649-4918-9887-ac054d2c0bdf'::uuid,'ACTIVE','dev-user',NULL,NULL),
-	 ('2026-07-13 12:24:36.428',NULL,NULL,'d1136a1f-cf62-4283-bbec-c5c5de46b7a0'::uuid,'feee530c-717c-41e1-ab32-e5c377ed5eb0'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-07-13 12:24:36.428',NULL,NULL,'d1136a1f-cf62-4283-bbec-c5c5de46b7a0'::uuid,'feee530c-717c-41e1-ab32-e5c377ed5eb0'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL);
 INSERT INTO tprofile_role (created_at,deleted_at,updated_at,id,profile_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-07-23 10:34:09.947',NULL,NULL,'575abac1-9fd8-4dd7-a9c9-20569bd4b0b8'::uuid,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'68fa4a81-c8b4-43cd-8c87-0c5a5361fd76'::uuid,'ACTIVE','dev-user',NULL,NULL),
-	 ('2026-07-23 10:34:38.253',NULL,NULL,'a4f3e0ef-98b3-425c-8138-7cbbd0f96b04'::uuid,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
+	 ('2026-07-23 10:34:38.253',NULL,NULL,'a4f3e0ef-98b3-425c-8138-7cbbd0f96b04'::uuid,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL);
 
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-02-05 09:32:42.469',NULL,NULL,'a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53'::uuid,'ffcc8009-4a0f-4e30-8a2f-8dd6f064d1ed'::uuid,'WAH_MOV','WAH','ACTIVE','menu','system',NULL,NULL,'Warehouse movements','','Movements','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
@@ -231,9 +222,7 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-02-05 09:41:04.428',NULL,NULL,'4c6d9bb2-2f86-4ca7-8a94-ad0700b84a9a'::uuid,'a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53'::uuid,'WAH_MOV_ISS','WAH','ACTIVE','view','system',NULL,NULL,'Warehouse Goods issue','/warehouse/movement/out','Goods issue','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-02-05 09:42:42.173',NULL,NULL,'f5504425-e972-465d-94ea-7150ebc98b41'::uuid,'a9a8bca1-4a11-44ea-91a5-6ec4c7c4fc53'::uuid,'WAH_MOV_INV','WAH','ACTIVE','view','system',NULL,NULL,'Warehouse Inventory','/warehouse/inventory','Inventory','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-02-05 09:44:39.237',NULL,NULL,'581baa05-206c-42d7-829e-d063210fd6f3'::uuid,'cfb86fcd-7d1a-4474-b0fd-eccec69ae575'::uuid,'WAH_REP_DAY','WAH','ACTIVE','view','system',NULL,NULL,'Daily movement','/warehouse/rep_daily','Daily movement','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
-	 (true,'2026-02-05 09:45:52.887',NULL,NULL,'ca083a13-af05-4c63-b0a3-5dd1afd14c0f'::uuid,'cfb86fcd-7d1a-4474-b0fd-eccec69ae575'::uuid,'WAH_REP_KAR','WAH','ACTIVE','view','system',NULL,NULL,'Material kardex','/warehouse/rep_kardex','Kardex','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-02-05 09:45:52.887',NULL,NULL,'ca083a13-af05-4c63-b0a3-5dd1afd14c0f'::uuid,'cfb86fcd-7d1a-4474-b0fd-eccec69ae575'::uuid,'WAH_REP_KAR','WAH','ACTIVE','view','system',NULL,NULL,'Material kardex','/warehouse/rep_kardex','Kardex','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-02-05 09:46:49.773',NULL,NULL,'22fdecde-84a8-460a-afb1-8c95d7389e35'::uuid,'cfb86fcd-7d1a-4474-b0fd-eccec69ae575'::uuid,'WAH_REP_STO','WAH','ACTIVE','view','system',NULL,NULL,'Warehouse Stock levels','/warehouse/rep_stock','Stock levels','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-03-20 06:03:34.868',NULL,NULL,'19c9cb14-984d-4c26-8639-7e4149fc7750'::uuid,NULL,'CRM','CRM','ACTIVE','menu','system',NULL,NULL,'CRM Menu options','/crm','CRM','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
@@ -244,9 +233,7 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-04-02 06:13:34.074',NULL,NULL,'90e91cdf-1904-4c70-a99b-60b2b27ebc0f'::uuid,'defbef22-0b31-41d4-90a3-dfa7e31b9f23'::uuid,'OBI-OB','OBI','ACTIVE','view','system',NULL,NULL,'Obituary','/obituary/obituary','Obituary','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-03-20 06:10:29.562',NULL,NULL,'e6ea9b99-9b63-4115-b586-9b576298163e'::uuid,'19c9cb14-984d-4c26-8639-7e4149fc7750'::uuid,'CRM_CAM','CRM','ACTIVE','menu','system',NULL,NULL,'Campaigns definition','/crm/commercial/campaign','Campaigns','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-03-20 06:13:57.386',NULL,NULL,'11617077-c6f5-41d5-b64f-6692b697a448'::uuid,'e6ea9b99-9b63-4115-b586-9b576298163e'::uuid,'CRM_CAM_GEN','CRM','ACTIVE','view','system',NULL,NULL,'General campaign','/crm/commercial/campaign/general','General campaign','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
-	 (true,'2026-03-20 06:14:16.434',NULL,NULL,'ca69f358-a52a-4592-b65b-3ceb0938408b'::uuid,'e6ea9b99-9b63-4115-b586-9b576298163e'::uuid,'CRM_CAM_CUS','CRM','ACTIVE','view','system',NULL,NULL,'Custom campaign','/crm/commercial/campaign/custom','Custom campaign','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-03-20 06:14:16.434',NULL,NULL,'ca69f358-a52a-4592-b65b-3ceb0938408b'::uuid,'e6ea9b99-9b63-4115-b586-9b576298163e'::uuid,'CRM_CAM_CUS','CRM','ACTIVE','view','system',NULL,NULL,'Custom campaign','/crm/commercial/campaign/custom','Custom campaign','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-05-13 11:14:48.130',NULL,NULL,'86ff7833-11c8-44b9-a239-29858fac82c6'::uuid,'19c9cb14-984d-4c26-8639-7e4149fc7750'::uuid,'CRM_CSE','CRM','ACTIVE','menu','rodrychm@gmail.com',NULL,NULL,'Customer Service','','Customer Service','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-05-13 11:23:53.938',NULL,NULL,'e19c0cd7-efdb-4c46-8cc7-d2cb65baa7f2'::uuid,'86ff7833-11c8-44b9-a239-29858fac82c6'::uuid,'CRM_CSE_SAPP','CRM','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Schedule and appointment','/crm/commercial/customer-service/create','Schedule and appointment','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
@@ -257,9 +244,7 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-06-30 12:24:20.729',NULL,NULL,'cd196477-3fb2-437f-a052-d6589bb8d51e'::uuid,'e48709a4-81c5-4b60-bf2a-286d8a59baf6'::uuid,'PARAMETER-M-SEC','PARAM','ACTIVE','view','dev-user',NULL,NULL,'Secrets','/parameter/secrets','Secrets','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-05-19 16:33:22.183',NULL,NULL,'d4903388-bb70-448d-b953-23c1e9fdcd8d'::uuid,'88d651f5-fbd1-4143-a95e-33b298940cd5'::uuid,'WFL-INBX','WFL','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Inbox','/workflow/tasks','Inbox','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-05-19 16:32:42.139',NULL,NULL,'00ee0b63-9e2a-428e-9b52-464e698747a4'::uuid,'88d651f5-fbd1-4143-a95e-33b298940cd5'::uuid,'WFL-FRM','WFL','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'BPM Process','/workflow/process','BPM Process','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
-	 (true,'2026-06-17 17:19:52.932',NULL,NULL,'ab88a015-24f3-466f-ba50-24f51cfdf1e5'::uuid,NULL,'PROD','PROD','ACTIVE','menu','rodrychm@gmail.com',NULL,NULL,'Production module','/production','Production','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-06-17 17:19:52.932',NULL,NULL,'ab88a015-24f3-466f-ba50-24f51cfdf1e5'::uuid,NULL,'PROD','PROD','ACTIVE','menu','rodrychm@gmail.com',NULL,NULL,'Production module','/production','Production','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-06-17 17:32:05.003',NULL,NULL,'e865e125-614d-49ef-87a6-95b1c0c8dcf0'::uuid,'ab88a015-24f3-466f-ba50-24f51cfdf1e5'::uuid,'PROD-DEF','PROD','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Products definition','/production/product','Products','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-06-17 17:33:35.004',NULL,NULL,'d9777303-6d70-4a4d-b64c-1930c155cc2c'::uuid,'ab88a015-24f3-466f-ba50-24f51cfdf1e5'::uuid,'PROD-OPERATION','PROD','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Operation units','/production/operation-unit','Operation units','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
@@ -270,9 +255,7 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-06-18 11:37:52.846',NULL,NULL,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'838b9e54-40fe-4fed-8953-bcf2f02fbef2'::uuid,'WAH_MOV-M','WAH','ACTIVE','menu','rodrychm@gmail.com',NULL,NULL,'Movements module','/warehouse/movements','Movements','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-06-18 11:38:35.157',NULL,NULL,'adb4d036-7ef9-4efe-8aed-b81b8150e6fc'::uuid,'838b9e54-40fe-4fed-8953-bcf2f02fbef2'::uuid,'WAH_REP-M','WAH','ACTIVE','menu','rodrychm@gmail.com',NULL,NULL,'Reports module','/warehouse/reports','Reports','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-06-18 11:40:43.264',NULL,NULL,'84da0f58-0ef4-4aad-bfa4-ec6c10d98acd'::uuid,'fe0012bf-6634-4b27-9c46-f00697c98633'::uuid,'WAH_CONF_WAH-M','WAH','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Warehouse','/warehouse/warehouse','Warehouse','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
-	 (true,'2026-06-18 11:41:42.145',NULL,NULL,'41df3342-f050-4df3-a92a-427071f1bb1b'::uuid,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'WAH_MOV_ISS-M','WAH','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Goods issue','/warehouse/movement/out','Goods issue','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-06-18 11:41:42.145',NULL,NULL,'41df3342-f050-4df3-a92a-427071f1bb1b'::uuid,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'WAH_MOV_ISS-M','WAH','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Goods issue','/warehouse/movement/out','Goods issue','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-06-18 11:42:24.482',NULL,NULL,'532fc514-b931-4ab2-8dc0-4b1ed6c9be57'::uuid,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'WAH_MOV_REC-M','WAH','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Goods receipt','/warehouse/movement/in','Goods receipt','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-06-18 11:42:57.048',NULL,NULL,'a2a7cf2a-f82f-412c-83ef-4f75319a26f6'::uuid,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'WAH_MOV_INV-M','WAH','ACTIVE','view','rodrychm@gmail.com',NULL,NULL,'Inventory','/warehouse/inventory','Inventory','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
@@ -283,9 +266,7 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-06-30 12:22:45.637',NULL,NULL,'e48709a4-81c5-4b60-bf2a-286d8a59baf6'::uuid,NULL,'PARAMETER-M','PARAM','ACTIVE','menu','dev-user',NULL,NULL,'Parameters','/parameter','Parameters','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-06-30 12:30:22.110',NULL,NULL,'263fa8dc-1bfc-4a6f-8265-ea76788f9d65'::uuid,'e48709a4-81c5-4b60-bf2a-286d8a59baf6'::uuid,'PARAMETER-M-VENDOR','PARAM','ACTIVE','view','dev-user',NULL,NULL,'Parameter-Vendor','/parameter/structure-vendor','Parameter-Vendor','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-07-03 15:14:09.074',NULL,NULL,'d61d0e3f-f95f-432b-abea-b0945223f455'::uuid,'4b0f823b-f0d1-42ea-ba35-5a12b6e5662b'::uuid,'CRM-M-PARAM','CRM','ACTIVE','view','dev-user',NULL,NULL,'Parameters','/crm/parameter','Parameters','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
-	 (true,'2026-07-23 09:59:21.011',NULL,NULL,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,NULL,'ACC','ACC','ACTIVE','menu','dev-user',NULL,NULL,'Access','','Access','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-07-23 09:59:21.011',NULL,NULL,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,NULL,'ACC','ACC','ACTIVE','menu','dev-user',NULL,NULL,'Access','','Access','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-07-03 18:51:31.078',NULL,NULL,'79aea72a-ae96-4ae3-93e0-1fe3b008e173'::uuid,'fe0012bf-6634-4b27-9c46-f00697c98633'::uuid,'WAH-M-PARAM','WAH','ACTIVE','view','dev-user',NULL,NULL,'Parameters','/parameter/custom/WAH','Parameters','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-07-13 12:16:01.313',NULL,NULL,'46b8fa34-d506-42f0-9108-93a337b0aaeb'::uuid,NULL,'WFL-M','WFL','ACTIVE','menu','dev-user',NULL,NULL,'Workflow mobile','','Workflow mobile','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
@@ -296,17 +277,14 @@ INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_i
 	 (true,'2026-07-23 10:00:59.381',NULL,NULL,'4b7bbc10-b07b-4110-b524-28009e2993cf'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'ACC-RES','ACC','ACTIVE','view','dev-user',NULL,NULL,'Resources','/access/resources','Resources','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-07-23 10:01:39.423',NULL,NULL,'9f687da6-67fe-46a5-9ded-b2fa5cf1e5bf'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-RES','ACC','ACTIVE','view','dev-user',NULL,NULL,'Resources','/access/resources','Resources','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-07-23 10:07:08.734',NULL,NULL,'161a43db-039e-4061-8562-fc220983ef1b'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'ACC-APP','ACC','ACTIVE','view','dev-user',NULL,NULL,'Apps menu','/access/user-profiles','Apps menu','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
-	 (true,'2026-07-23 10:02:23.582',NULL,NULL,'6115a0c2-6385-4310-8235-1c0c45fa2691'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-ROL','ACC','ACTIVE','view','dev-user',NULL,NULL,'Roles and resources relation','/access/roles','Roles','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid)
-ON CONFLICT (id) DO NOTHING;
-
+	 (true,'2026-07-23 10:02:23.582',NULL,NULL,'6115a0c2-6385-4310-8235-1c0c45fa2691'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-ROL','ACC','ACTIVE','view','dev-user',NULL,NULL,'Roles and resources relation','/access/roles','Roles','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid);
 INSERT INTO tresource (restricted,created_at,deleted_at,updated_at,id,resource_id,code,module_code,status,"type",created_by,deleted_by,updated_by,description,endpoint,"name",menu_id) VALUES
 	 (true,'2026-07-23 10:02:59.440',NULL,NULL,'a734ded9-7366-4d84-ba90-8e321bbde515'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'ACC-ROL','ACC','ACTIVE','view','dev-user',NULL,NULL,'Roles and resources relation','/access/roles','Roles','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-07-23 10:04:01.969',NULL,NULL,'8061bbbb-e377-4e46-9c25-28239dd531ca'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-PROF','ACC','ACTIVE','view','dev-user',NULL,NULL,'Profiles and roles relation','/access/profiles','Profiles','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-07-23 10:06:01.676',NULL,NULL,'72d2498f-9268-4eae-a7dd-f97f8257d83d'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'ACC-USER','ACC','ACTIVE','view','dev-user',NULL,NULL,'User,  profiles and interins','/access/users','Users','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
 	 (true,'2026-07-23 10:07:35.443',NULL,NULL,'6bcfe2d4-a3a7-49cf-ace2-29d0803e611e'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-APP','ACC','ACTIVE','view','dev-user',NULL,NULL,'Apps menu','/access/user-profiles','Apps menu','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid),
 	 (true,'2026-07-23 10:03:33.311',NULL,NULL,'8c45c070-ade7-4785-a936-0a3b637c5366'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'ACC-PROF','ACC','ACTIVE','view','dev-user',NULL,NULL,'Profiles and roles relation','/access/profiles','Profiles','80bf089b-bf98-4088-9b99-0409773e5c67'::uuid),
-	 (true,'2026-07-23 10:05:35.686',NULL,NULL,'5e3f938c-8cab-4784-ba2f-295e71a64aa0'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-USER','ACC','ACTIVE','view','dev-user',NULL,NULL,'User,  profiles and interins','/access/users','Users','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid)
-ON CONFLICT (id) DO NOTHING;
+	 (true,'2026-07-23 10:05:35.686',NULL,NULL,'5e3f938c-8cab-4784-ba2f-295e71a64aa0'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'ACC-M-USER','ACC','ACTIVE','view','dev-user',NULL,NULL,'User,  profiles and interins','/access/users','Users','1d35f153-0a9c-45e7-b155-8966dfcb6269'::uuid);
 
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-20 14:57:52.928',NULL,NULL,'82fa8bcc-9574-4310-9b4f-fbe4d7e3ed9d'::uuid,'ca083a13-af05-4c63-b0a3-5dd1afd14c0f'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -318,9 +296,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-04-20 14:57:52.928',NULL,NULL,'9530f064-e5c8-4f0b-b9ea-7cfba846bf60'::uuid,'26748ab3-aaed-4260-a0ff-b62da8e9b4b8'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:57:52.928',NULL,NULL,'5914fcac-d5a1-43e2-92af-fdee3493c5d2'::uuid,'6328e0a8-2e01-40a5-8078-b3cc92296c31'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:57:52.928',NULL,NULL,'b8779b8a-65f2-4597-805f-747b0b03a6a8'::uuid,'cfb86fcd-7d1a-4474-b0fd-eccec69ae575'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-04-20 14:57:52.928',NULL,NULL,'688f2d4a-4e66-4626-b303-443db03015bc'::uuid,'ffcc8009-4a0f-4e30-8a2f-8dd6f064d1ed'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-04-20 14:57:52.928',NULL,NULL,'688f2d4a-4e66-4626-b303-443db03015bc'::uuid,'ffcc8009-4a0f-4e30-8a2f-8dd6f064d1ed'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-20 14:57:52.928',NULL,NULL,'7cf64e8d-a4b8-4adc-9dfc-0d432a96be1c'::uuid,'4c6d9bb2-2f86-4ca7-8a94-ad0700b84a9a'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:58:05.171',NULL,NULL,'4b1ddc03-b579-425b-a0aa-54d088b24d74'::uuid,'92644f01-505d-4d3a-b31a-17d920fdcce3'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -331,9 +307,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-04-20 14:58:05.171',NULL,NULL,'0af2d6ba-5175-4b97-8c1a-9dad8011330b'::uuid,'ca69f358-a52a-4592-b65b-3ceb0938408b'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:58:05.171',NULL,NULL,'edae2f96-cb9a-43d2-b234-ab0d820e5503'::uuid,'11617077-c6f5-41d5-b64f-6692b697a448'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:58:14.693',NULL,NULL,'716bcdef-7f4a-44c1-99fa-1188ff09c76b'::uuid,'defbef22-0b31-41d4-90a3-dfa7e31b9f23'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-04-20 14:58:14.693',NULL,NULL,'2a6412c8-96a8-48db-9db6-c08fae46a2b4'::uuid,'90e91cdf-1904-4c70-a99b-60b2b27ebc0f'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-04-20 14:58:14.693',NULL,NULL,'2a6412c8-96a8-48db-9db6-c08fae46a2b4'::uuid,'90e91cdf-1904-4c70-a99b-60b2b27ebc0f'::uuid,'3a8732ee-baaf-423b-bbcf-59b8c63e3cdb'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-20 14:58:55.653',NULL,NULL,'0c1b29c9-17d6-44c6-a86d-ef53ef90da20'::uuid,'92644f01-505d-4d3a-b31a-17d920fdcce3'::uuid,'132b31fe-1996-4b4f-a058-6105f024fed9'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-20 14:58:55.653',NULL,NULL,'210ebf41-2c2c-4395-8f27-7bbfbdaa77d4'::uuid,'e5014912-1b7f-49e6-a45f-694d723d2190'::uuid,'132b31fe-1996-4b4f-a058-6105f024fed9'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -344,9 +318,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-04-20 14:58:55.653',NULL,NULL,'23f66f6d-001e-407e-aeef-54c9224f1f5b'::uuid,'11617077-c6f5-41d5-b64f-6692b697a448'::uuid,'132b31fe-1996-4b4f-a058-6105f024fed9'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-05-13 11:31:51.989',NULL,NULL,'a7d48ff2-abdf-4b23-9dc1-792bff8daf2b'::uuid,'86ff7833-11c8-44b9-a239-29858fac82c6'::uuid,'132b31fe-1996-4b4f-a058-6105f024fed9'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-05-13 11:32:13.579',NULL,NULL,'cb167847-38b3-4f72-aa5b-40fb98f596e2'::uuid,'e19c0cd7-efdb-4c46-8cc7-d2cb65baa7f2'::uuid,'132b31fe-1996-4b4f-a058-6105f024fed9'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-05-14 11:07:21.963',NULL,NULL,'7fc56105-6dfa-4459-af56-3d8139799935'::uuid,'4b0f823b-f0d1-42ea-ba35-5a12b6e5662b'::uuid,'4d173108-12ce-4480-90ce-0aed9312af26'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-05-14 11:07:21.963',NULL,NULL,'7fc56105-6dfa-4459-af56-3d8139799935'::uuid,'4b0f823b-f0d1-42ea-ba35-5a12b6e5662b'::uuid,'4d173108-12ce-4480-90ce-0aed9312af26'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-05-14 11:07:21.963',NULL,NULL,'79e25bac-c806-432d-824c-837baf8ea87f'::uuid,'d1eeab68-e4ff-4968-ac30-7936c2eb8300'::uuid,'4d173108-12ce-4480-90ce-0aed9312af26'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-05-19 16:35:29.387',NULL,NULL,'375415be-a101-4dad-be22-3fd86843f25d'::uuid,'d4903388-bb70-448d-b953-23c1e9fdcd8d'::uuid,'f3473fb0-75ee-4323-83e4-784524bab50c'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -357,9 +329,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-06-17 18:02:32.809',NULL,NULL,'9a244c74-b665-4c33-b78b-4d326880906d'::uuid,'e865e125-614d-49ef-87a6-95b1c0c8dcf0'::uuid,'50a3b65f-3f08-4e21-a842-0cc4ee615078'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-17 18:02:32.809',NULL,NULL,'a6db32dd-e6f0-41ff-99b9-ba115bacc05f'::uuid,'ab88a015-24f3-466f-ba50-24f51cfdf1e5'::uuid,'50a3b65f-3f08-4e21-a842-0cc4ee615078'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-17 18:02:32.809',NULL,NULL,'36950e44-be13-47e2-aef6-a6cd0b5f2663'::uuid,'44d0d0dc-66db-472e-aca2-ad41e3c3e0cc'::uuid,'50a3b65f-3f08-4e21-a842-0cc4ee615078'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-06-18 11:57:08.404',NULL,NULL,'62bf0472-7eaa-4289-95ef-48711d10c1ef'::uuid,'532fc514-b931-4ab2-8dc0-4b1ed6c9be57'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-06-18 11:57:08.404',NULL,NULL,'62bf0472-7eaa-4289-95ef-48711d10c1ef'::uuid,'532fc514-b931-4ab2-8dc0-4b1ed6c9be57'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-06-18 11:57:08.404',NULL,NULL,'1c340e9c-d409-4b3d-9a6e-bdb0c77532f6'::uuid,'a2a7cf2a-f82f-412c-83ef-4f75319a26f6'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-18 11:57:08.404',NULL,NULL,'ce842c9e-e08d-4f51-82f6-55b1fef4f1e7'::uuid,'84da0f58-0ef4-4aad-bfa4-ec6c10d98acd'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
@@ -370,9 +340,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-06-18 11:57:08.404',NULL,NULL,'bc1f0cbc-24cb-42b8-b81c-520d17e3bedb'::uuid,'41df3342-f050-4df3-a92a-427071f1bb1b'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-18 11:57:08.404',NULL,NULL,'6a570f41-b6d0-4f01-ac2e-c78dd8b347fe'::uuid,'adb4d036-7ef9-4efe-8aed-b81b8150e6fc'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-18 11:57:08.404',NULL,NULL,'dbcb876b-5fa2-4fa8-9208-c3ef1563d385'::uuid,'9a287fc6-072b-43c5-9b5a-754e1df55f7e'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-06-18 11:57:08.404',NULL,NULL,'a38a130a-9828-4d8d-9a40-1f1f28a3decb'::uuid,'838b9e54-40fe-4fed-8953-bcf2f02fbef2'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-06-18 11:57:08.404',NULL,NULL,'a38a130a-9828-4d8d-9a40-1f1f28a3decb'::uuid,'838b9e54-40fe-4fed-8953-bcf2f02fbef2'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-06-21 16:16:34.563',NULL,NULL,'04f405bf-8c93-4284-be3b-bfcfc540b4b6'::uuid,'37aa3f87-1d14-4507-b13e-af7266acba85'::uuid,'4d173108-12ce-4480-90ce-0aed9312af26'::uuid,'ACTIVE','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-06-30 12:34:53.447',NULL,NULL,'f9f6ee8b-192d-4a0a-9c00-489c57430ed3'::uuid,'cd196477-3fb2-437f-a052-d6589bb8d51e'::uuid,'191bc64f-0649-4918-9887-ac054d2c0bdf'::uuid,'ACTIVE','dev-user',NULL,NULL),
@@ -383,9 +351,7 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-07-06 11:39:20.340',NULL,NULL,'2edc69c4-7df1-4981-9350-f90f603aa577'::uuid,'79aea72a-ae96-4ae3-93e0-1fe3b008e173'::uuid,'c73da58b-854e-422f-8b50-aaaad2f21d7d'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-13 12:22:40.481',NULL,NULL,'246aa043-0ce1-4dd9-9ef9-7d4106aa747e'::uuid,'ab598ac3-a127-4d8d-9e73-e4af8056628e'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-13 12:22:40.481',NULL,NULL,'e8b0e878-aa0a-4ca2-ab38-6bfa031c164f'::uuid,'17df9706-349a-40d8-b947-a11ffa90554b'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL),
-	 ('2026-07-13 12:22:40.481',NULL,NULL,'76586f4d-60d4-43f1-ac4b-03c672e206c9'::uuid,'46b8fa34-d506-42f0-9108-93a337b0aaeb'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-07-13 12:22:40.481',NULL,NULL,'76586f4d-60d4-43f1-ac4b-03c672e206c9'::uuid,'46b8fa34-d506-42f0-9108-93a337b0aaeb'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-07-13 12:22:40.481',NULL,NULL,'56f9b0cb-81ee-448b-a413-ff3796185b9d'::uuid,'ece5f0e0-4989-4c7c-ad83-586b9f7781a2'::uuid,'a1ac399c-2c6d-4801-a10e-e9e5e2f898d4'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-23 10:33:08.336',NULL,NULL,'77611b05-84a5-4f33-97c1-cdb83cd8bbbe'::uuid,'8061bbbb-e377-4e46-9c25-28239dd531ca'::uuid,'68fa4a81-c8b4-43cd-8c87-0c5a5361fd76'::uuid,'ACTIVE','dev-user',NULL,NULL),
@@ -396,14 +362,11 @@ INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role
 	 ('2026-07-23 10:33:08.336',NULL,NULL,'0e2f21a1-4928-449d-9f27-97b8001f0cf6'::uuid,'de92092a-f570-4a60-96fc-dd280a6da433'::uuid,'68fa4a81-c8b4-43cd-8c87-0c5a5361fd76'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-23 10:33:35.996',NULL,NULL,'f47b6c32-4fbd-4cda-9e89-e3b496aaf885'::uuid,'72d2498f-9268-4eae-a7dd-f97f8257d83d'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-23 10:33:35.996',NULL,NULL,'abc8a857-37b8-4151-b90a-eaf633e183b7'::uuid,'8b3947c1-91b9-41ff-9413-3adae38cfe43'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL),
-	 ('2026-07-23 10:33:35.996',NULL,NULL,'a431b0c8-5993-4882-b5a3-2e0fe1cf84ec'::uuid,'4b7bbc10-b07b-4110-b524-28009e2993cf'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-07-23 10:33:35.996',NULL,NULL,'a431b0c8-5993-4882-b5a3-2e0fe1cf84ec'::uuid,'4b7bbc10-b07b-4110-b524-28009e2993cf'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL);
 INSERT INTO trole_resource (created_at,deleted_at,updated_at,id,resource_id,role_id,status,created_by,deleted_by,updated_by) VALUES
 	 ('2026-07-23 10:33:35.996',NULL,NULL,'6645d45b-7c26-48d3-a3c6-2e729002a042'::uuid,'8c45c070-ade7-4785-a936-0a3b637c5366'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL),
 	 ('2026-07-23 10:33:35.996',NULL,NULL,'d1de091f-e7db-4d2c-8251-a2fbeb8fbc91'::uuid,'a734ded9-7366-4d84-ba90-8e321bbde515'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL),
-	 ('2026-07-23 10:33:35.996',NULL,NULL,'bc485274-35b6-42f8-8b14-5b6caff2866b'::uuid,'161a43db-039e-4061-8562-fc220983ef1b'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
+	 ('2026-07-23 10:33:35.996',NULL,NULL,'bc485274-35b6-42f8-8b14-5b6caff2866b'::uuid,'161a43db-039e-4061-8562-fc220983ef1b'::uuid,'c3a10134-e8ca-439f-8c15-6b0850f55dc7'::uuid,'ACTIVE','dev-user',NULL,NULL);
 
 INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,id,profile_id,status,user_code,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-01','2026-12-31','2026-04-22 08:24:27.395',NULL,NULL,'1d50eb31-e356-459f-b10b-559e90eda917'::uuid,'751a5da0-c5af-4947-8044-2bf9d89fe5ec'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL),
@@ -415,9 +378,7 @@ INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,
 	 ('2026-04-01','2026-12-31','2026-05-19 16:39:21.073',NULL,NULL,'88ae54cd-1183-4edf-9118-6e2878f6e8e6'::uuid,'e79973d3-5eb9-45d3-a058-22d467c397ae'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-06-12 13:09:53.688',NULL,NULL,'14743258-a761-48e5-bf69-9252840623fe'::uuid,'6be11d65-f359-4573-b4fc-c6b2d4186773'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-06-17 17:49:44.080',NULL,NULL,'a1a451a9-887d-4ce8-adc6-988b592e2857'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL),
-	 ('2026-04-01','2026-12-31','2026-06-18 12:12:13.216',NULL,NULL,'e4a93e62-1f68-4490-99ab-cfb6537a53b3'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-04-01','2026-12-31','2026-06-18 12:12:13.216',NULL,NULL,'e4a93e62-1f68-4490-99ab-cfb6537a53b3'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL);
 INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,id,profile_id,status,user_code,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-01','2026-12-31','2026-06-18 12:13:13.754',NULL,NULL,'f50a7089-da7e-4f5d-ad77-7661ffe9cd4c'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','rodrychm@gmail.com','rodrychm@gmail.com',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-06-30 12:37:55.457',NULL,NULL,'9d86329e-2e0d-4b56-8b27-257229306671'::uuid,'ccd924f5-8c29-44dd-8be3-076e2780bd2b'::uuid,'ACTIVE','rodrychm@gmail.com','dev-user',NULL,NULL),
@@ -428,9 +389,7 @@ INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,
 	 ('2026-04-01','2026-12-31','2026-07-12 18:19:39.616',NULL,NULL,'8781aa92-1c98-4a13-ba1b-d64759691a31'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','vendor3','dev-user',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-07-12 18:19:39.665',NULL,NULL,'5ae9d983-a35b-41c6-8025-4f996084eaae'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'ACTIVE','vendor3','dev-user',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-07-12 18:19:44.009',NULL,NULL,'5c7d8ae6-c32f-4df1-b310-9e1255245bc6'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','vendor4','dev-user',NULL,NULL),
-	 ('2026-04-01','2026-12-31','2026-07-12 18:19:44.043',NULL,NULL,'6c3de7f4-d20b-4892-a6f6-5a59caaf8afb'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'ACTIVE','vendor4','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
-
+	 ('2026-04-01','2026-12-31','2026-07-12 18:19:44.043',NULL,NULL,'6c3de7f4-d20b-4892-a6f6-5a59caaf8afb'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'ACTIVE','vendor4','dev-user',NULL,NULL);
 INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,id,profile_id,status,user_code,created_by,deleted_by,updated_by) VALUES
 	 ('2026-04-01','2026-12-31','2026-07-12 18:19:48.669',NULL,NULL,'8c6309a9-9718-491d-8601-bec9ae4a8306'::uuid,'024a1836-7d09-4ab8-a1d2-6b11eb764a67'::uuid,'ACTIVE','vendor5','dev-user',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-07-12 18:19:48.696',NULL,NULL,'289f5e40-93bb-4f99-9c8f-ae25275120d1'::uuid,'af5573b7-3934-4941-9d14-a716154d11a0'::uuid,'ACTIVE','vendor5','dev-user',NULL,NULL),
@@ -438,8 +397,7 @@ INSERT INTO tuser_profile (valid_from,valid_to,created_at,deleted_at,updated_at,
 	 ('2026-04-01','2026-12-31','2026-07-23 10:35:29.300',NULL,NULL,'6aea4573-996b-4ce7-a7dc-a4774df4a17d'::uuid,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'ACTIVE','rodrychm@gmail.com','dev-user',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-07-23 10:35:46.497',NULL,NULL,'59f8beb6-63b2-44d8-a4fb-d3c70409e6eb'::uuid,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'ACTIVE','rodrychm@gmail.com','dev-user',NULL,NULL),
 	 ('2026-04-01','2026-12-31','2026-07-23 10:36:15.011',NULL,NULL,'f57d8975-c878-47e0-823c-0b3f13e46fa0'::uuid,'4833745b-aba5-4ee3-9223-c33e728d84f3'::uuid,'ACTIVE','hbellido6@gmail.com','dev-user',NULL,NULL),
-	 ('2026-04-01','2026-12-31','2026-07-23 10:36:26.297',NULL,NULL,'16d74555-2d54-46b8-bbaa-fb04424c00c5'::uuid,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'ACTIVE','hbellido6@gmail.com','dev-user',NULL,NULL)
-ON CONFLICT (id) DO NOTHING;
+	 ('2026-04-01','2026-12-31','2026-07-23 10:36:26.297',NULL,NULL,'16d74555-2d54-46b8-bbaa-fb04424c00c5'::uuid,'584c4b39-4580-4e0f-9776-5d7ae5fb5536'::uuid,'ACTIVE','hbellido6@gmail.com','dev-user',NULL,NULL);
 
 -- Insert translation data
 INSERT INTO tlocal_translation (language_code, domain, entity, entity_id, text) VALUES
@@ -508,5 +466,4 @@ INSERT INTO tlocal_translation (language_code, domain, entity, entity_id, text) 
     ('es', 'access', 'resource', '72d2498f-9268-4eae-a7dd-f97f8257d83d', '{"name": "Usuarios", "description": "Gestión de usuarios y accesos"}'),
     ('es', 'access', 'resource', '6bcfe2d4-a3a7-49cf-ace2-29d0803e611e', '{"name": "Menú", "description": "Estructura de menús móvil"}'),
     ('es', 'access', 'resource', '8c45c070-ade7-4785-a936-0a3b637c5366', '{"name": "Perfiles", "description": "Gestión de perfiles y roles"}'),
-    ('es', 'access', 'resource', '5e3f938c-8cab-4784-ba2f-295e71a64aa0', '{"name": "Usuarios", "description": "Gestión de usuarios móvil"}')
-ON CONFLICT (language_code, domain, entity, entity_id) DO NOTHING;
+    ('es', 'access', 'resource', '5e3f938c-8cab-4784-ba2f-295e71a64aa0', '{"name": "Usuarios", "description": "Gestión de usuarios móvil"}');
