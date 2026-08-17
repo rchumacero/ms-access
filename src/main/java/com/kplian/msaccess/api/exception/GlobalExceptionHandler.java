@@ -5,9 +5,6 @@ import com.kplian.msaccess.api.service.I18nService;
 import com.kplian.msaccess.domain.exception.BusinessException;
 import com.kplian.msaccess.domain.exception.InfrastructureException;
 import com.kplian.msaccess.domain.exception.SystemException;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.StatusCode;
-import io.opentelemetry.api.trace.Tracer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -30,9 +27,6 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
     @Inject
     I18nService i18nService;
 
-    @Inject
-    Tracer tracer;
-
     @Context
     UriInfo uriInfo;
 
@@ -45,11 +39,9 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
             return buildBusinessResponse(businessException);
         }
         if (exception instanceof InfrastructureException infrastructureException) {
-            recordTelemetry(infrastructureException, "infrastructure");
             return buildResponse(infrastructureException.getCode(), infrastructureException.getMessageKey(), Response.Status.INTERNAL_SERVER_ERROR);
         }
         if (exception instanceof SystemException systemException) {
-            recordTelemetry(systemException, "system");
             return buildResponse(systemException.getCode(), systemException.getMessageKey(), Response.Status.INTERNAL_SERVER_ERROR);
         }
         if (exception instanceof ConstraintViolationException) {
@@ -70,7 +62,6 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
         }
 
         LOG.error("Unexpected error occurred: " + exception.getMessage(), exception);
-        recordTelemetry(exception, "system");
         return buildResponse("UNEXPECTED_ERROR", "error.system.unexpected", Response.Status.INTERNAL_SERVER_ERROR);
     }
 
@@ -91,19 +82,5 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
             uriInfo == null ? null : uriInfo.getPath()
         );
         return Response.status(status).entity(dto).build();
-    }
-
-    private void recordTelemetry(Exception exception, String errorType) {
-        Span span = tracer.spanBuilder("exception").startSpan();
-        try {
-            span.setStatus(StatusCode.ERROR);
-            span.setAttribute("error", true);
-            span.setAttribute("error.type", errorType);
-            span.setAttribute("error.class", exception.getClass().getName());
-            span.setAttribute("error.message", exception.getMessage());
-            span.recordException(exception);
-        } finally {
-            span.end();
-        }
     }
 }
